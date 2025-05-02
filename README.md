@@ -1,11 +1,11 @@
-# Script d'Installation Arch Linux
+# Script d'Installation Arch Linux / Debian
 
 ![Version](https://img.shields.io/badge/version-1.0-blue)
 ![Date](https://img.shields.io/badge/date-May%202025-green)
 
 ## 📝 Description
 
-Script automatisé pour configurer un environnement de développement sur Arch Linux. Ce script installe et configure les outils essentiels pour le développement.
+Script automatisé pour configurer un environnement de développement sur Arch Linux et Debian. Ce script installe et configure les outils essentiels pour le développement.
 
 ## 🚀 Fonctionnalités
 
@@ -24,18 +24,41 @@ Script automatisé pour configurer un environnement de développement sur Arch L
 
 ## 📋 Prérequis
 
-- Système Arch Linux
+- Système Arch Linux ou Debian
 - Accès root
-- `yay` (AUR helper) installé
+- `yay` (AUR helper) installé (uniquement pour Arch Linux)
 - Connexion Internet stable
 
 ## 💻 Installation
+
+### Pour Arch Linux :
 
 1. Clonez le dépôt :
 
 ```bash
 git clone https://github.com/N0tFond/Script.git
 cd Script
+```
+
+2. Rendez le script exécutable :
+
+```bash
+chmod +x install.sh
+```
+
+3. Exécutez le script :
+
+```bash
+sudo ./install.sh
+```
+
+### Pour Debian :
+
+1. Clonez le dépôt :
+
+```bash
+git clone https://github.com/N0tFond/Script.git
+cd Script/DEBIAN_Version
 ```
 
 2. Rendez le script exécutable :
