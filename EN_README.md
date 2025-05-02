@@ -34,8 +34,8 @@ Automated script to set up a development environment on Arch Linux. This script 
 1. Clone the repository:
 
 ```bash
-git clone [REPO_URL]
-cd [FOLDER_NAME]
+git clone https://github.com/N0tFond/Script.git
+cd Script
 ```
 
 2. Make the script executable:
