@@ -34,8 +34,8 @@ Script automatisé pour configurer un environnement de développement sur Arch L
 1. Clonez le dépôt :
 
 ```bash
-git clone [URL_DU_REPO]
-cd [NOM_DU_DOSSIER]
+git clone https://github.com/N0tFond/Script.git
+cd Script
 ```
 
 2. Rendez le script exécutable :
