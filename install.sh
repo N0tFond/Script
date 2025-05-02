@@ -61,6 +61,15 @@ yay -S --noconfirm code
 echo "Installing Spotify..."
 yay -S --noconfirm spotify
 
+# Start installation message
+echo "╔═════════════════════════════════════════════════════════════╗"
+echo "║               ℹ️  Important Information  ℹ️                 ║"
+echo "╠═════════════════════════════════════════════════════════════╣"
+echo "║  If you're having trouble with nvm and npm installation,    ║"
+echo "║  you can either install them manually or continue using     ║"
+echo "║  this automated installation script.                        ║"
+echo "╚═════════════════════════════════════════════════════════════╝"
+
 # Download and install nvm
 echo "Downloading and installing nvm..."
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
