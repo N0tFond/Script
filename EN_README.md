@@ -21,6 +21,70 @@ Automated script to set up a development environment on Arch Linux and Debian. T
   - Spotify
   - Neofetch
 - ZSH configuration as default shell
+- Custom installation: ability to add additional packages during installation
+
+## 📚 Detailed Documentation
+
+### ZSH and Oh My ZSH
+
+- [Official ZSH Documentation](https://www.zsh.org/)
+- [Oh My ZSH](https://ohmyz.sh/)
+- Recommended plugins:
+  - zsh-autosuggestions
+  - zsh-syntax-highlighting
+  - git
+  - sudo
+
+### Distribution Resources
+
+#### Arch Linux
+
+- [Arch Linux Wiki](https://wiki.archlinux.org/)
+- [AUR (Arch User Repository)](https://aur.archlinux.org/)
+- [Official Packages](https://archlinux.org/packages/)
+- [Yay Installation Guide](https://github.com/Jguer/yay)
+
+#### Debian
+
+- [Debian Official Website](https://www.debian.org/)
+- [Debian Packages](https://www.debian.org/distrib/packages)
+- [Debian Backports](https://backports.debian.org/)
+- [Debian Wiki](https://wiki.debian.org/)
+
+### Development Tools
+
+#### MariaDB
+
+- [MariaDB Documentation](https://mariadb.org/documentation/)
+- Installed version: 10.11.x
+- Default port: 3306
+
+#### GitHub CLI
+
+- [GitHub CLI Documentation](https://cli.github.com/manual/)
+- Essential commands:
+  - `gh auth login`: Login to GitHub
+  - `gh repo create`: Create a new repository
+  - `gh pr create`: Create a pull request
+
+#### Node.js and NVM
+
+- [Node.js Documentation](https://nodejs.org/docs)
+- [NVM Guide](https://github.com/nvm-sh/nvm)
+- Useful NVM commands:
+  - `nvm install node`: Install latest version
+  - `nvm use node`: Use latest version
+  - `nvm alias default node`: Set default version
+
+#### Visual Studio Code
+
+- [VS Code Documentation](https://code.visualstudio.com/docs)
+- Recommended extensions:
+  - ESLint
+  - **Prettier**
+  - GitLens
+  - Live Server
+  - Material Icon Theme
 
 ## 📋 Prerequisites
 

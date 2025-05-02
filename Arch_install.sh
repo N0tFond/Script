@@ -35,6 +35,29 @@ echo "╔═══════════════════════�
 echo "║               🔄 Starting Installation                      ║"
 echo "╚═════════════════════════════════════════════════════════════╝"
 
+# Function to ask for additional packages
+ask_additional_packages() {
+    echo "╔═════════════════════════════════════════════════════════════╗"
+    echo "║             📦 Additional Packages Selection 📦             ║"
+    echo "╠═════════════════════════════════════════════════════════════╣"
+    echo "║ Would you like to install additional packages?              ║"
+    echo "║ Enter package names separated by spaces, or press           ║"
+    echo "║ Enter to skip.                                              ║"
+    echo "╚═════════════════════════════════════════════════════════════╝"
+    
+    read -r -p "Additional packages: " additional_packages
+    
+    if [ -n "$additional_packages" ]; then
+        echo "Installing additional packages..."
+        if pacman -Ss "${additional_packages}" > /dev/null 2>&1; then
+            sudo pacman -S --noconfirm $additional_packages
+        else
+            echo "Some packages will be installed using yay..."
+            yay -S --noconfirm $additional_packages
+        fi
+    fi
+}
+
 # Update packages and install required dependencies
 echo "Updating packages and installing dependencies..."
 sudo pacman -Syu --noconfirm
@@ -52,6 +75,9 @@ echo -e "\nResuming installation...\n"
 # Installing base packages
 echo "Installing base packages..."
 sudo pacman -S --noconfirm mariadb github-cli discord zsh git neofetch
+
+# Ask for additional packages
+ask_additional_packages
 
 # Install Visual Studio Code via yay
 echo "Installing Visual Studio Code..."
