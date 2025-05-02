@@ -11,7 +11,6 @@ Automated script to set up a development environment on Arch Linux and Debian. T
 
 - Complete system update
 - Development tools installation:
-  - MariaDB
   - GitHub CLI
   - Visual Studio Code
   - Git

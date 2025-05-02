@@ -11,7 +11,6 @@ Script automatisé pour configurer un environnement de développement sur Arch L
 
 - Mise à jour système complète
 - Installation des outils de développement :
-  - MariaDB
   - GitHub CLI
   - Visual Studio Code
   - Git
