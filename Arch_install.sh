@@ -74,7 +74,7 @@ echo -e "\nResuming installation...\n"
 
 # Installing base packages
 echo "Installing base packages..."
-sudo pacman -S --noconfirm mariadb github-cli discord zsh git neofetch
+sudo pacman -S --noconfirm github-cli discord zsh git neofetch
 
 # Ask for additional packages
 ask_additional_packages

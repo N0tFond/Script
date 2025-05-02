@@ -70,8 +70,8 @@ echo "║               📦 Sélection des Packages 📦                  ║"
 echo "╚═════════════════════════════════════════════════════════════╝"
 
 # Base packages selection
-if prompt_package_installation "Packages de base" "mariadb-server, gh, zsh, git, neofetch, curl, wget"; then
-    sudo apt install -y mariadb-server gh zsh git neofetch curl wget software-properties-common apt-transport-https
+if prompt_package_installation "Packages de base" "gh, zsh, git, neofetch, curl, wget"; then
+    sudo apt install -y  gh zsh git neofetch curl wget software-properties-common apt-transport-https
 fi
 
 # VSCode selection
