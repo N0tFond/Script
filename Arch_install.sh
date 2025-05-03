@@ -81,7 +81,7 @@ ask_additional_packages
 
 # Install Visual Studio Code via yay
 echo "Installing Visual Studio Code..."
-yay -S --noconfirm code
+yay -S --noconfirm visual-studio-code-bin
 
 # Install Spotify via yay
 echo "Installing Spotify..."
