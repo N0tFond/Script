@@ -148,9 +148,11 @@ sudo ./install.sh
 - Un délai de 15 secondes est prévu après les mises à jour système
 - Assurez-vous d'avoir une sauvegarde de vos données importantes avant l'exécution
 
-## 👤 Auteur
+## Author ✍️
 
-- **NotFond**
+| Author |
+| :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:
+| [<img src="https://avatars.githubusercontent.com/u/92156365?s=400&u=03e2069751224461782a03ba2dfa57a51c4e5438&v=4" width=115 style="border-radius: 15px;" ><br><sub>@notfound</sub>](https://github.com/N0tFond) <br><br> [![](https://img.shields.io/badge/Portfolio-255E63?style=for-the-badge&logo=About.me&logoColor=white)](https://notfound-dev.vercel.app)
 
 ## 📄 Licence
 
