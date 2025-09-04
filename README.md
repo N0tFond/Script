@@ -1,163 +1,291 @@
-# Script d'Installation Arch Linux / Debian
+# 🚀 Universal Linux Installer
 
-![Version](https://img.shields.io/badge/version-1.0-blue)
-![Date](https://img.shields.io/badge/date-May%202025-green)
+Un script d'installation universel et optimisé pour les distributions Linux, supportant une large gamme de familles de distributions avec détection automatique.
 
-## 📝 Description
+## ✨ Fonctionnalités
 
-Script automatisé pour configurer un environnement de développement sur Arch Linux et Debian. Ce script installe et configure les outils essentiels pour le développement.
+- 🔍 **Détection automatique** de la distribution Linux
+- 📦 **Support multi-distribution** avec scripts spécialisés
+- 🎯 **Installation modulaire** avec sélection interactive des paquets
+- 🛠️ **Configuration optimisée** pour chaque gestionnaire de paquets
+- 📊 **Barres de progression** et logging détaillé
+- 🔧 **Environnement de développement** complet
+- 🐚 **Configuration ZSH** avec Oh My Zsh
+- 📝 **Logging complet** pour debugging
+- 🧹 **Nettoyage automatique** du système
 
-## 🚀 Fonctionnalités
+## 🏗️ Structure du Projet
 
-- Mise à jour système complète
-- Installation des outils de développement :
-  - GitHub CLI
-  - Visual Studio Code
-  - Git
-  - Node.js (via nvm)
-- Installation des applications :
-  - Discord
-  - Spotify
-  - Neofetch
-- Configuration de ZSH comme shell par défaut
-- Installation personnalisée : possibilité d'ajouter des paquets supplémentaires pendant l'installation
+```
+├── install.sh                    # Script principal avec détection auto
+├── common/
+│   └── functions.sh              # Fonctions communes partagées
+└── distributions/
+    ├── debian/
+    │   └── install.sh           # Ubuntu, Debian, Mint, Elementary, Pop!_OS, Kali
+    ├── arch/
+    │   └── install.sh           # Arch, Manjaro, EndeavourOS, ArcoLinux, Garuda
+    ├── redhat/
+    │   └── install.sh           # Fedora, CentOS, RHEL, Rocky, AlmaLinux, OpenSUSE
+    ├── gentoo/
+    │   └── install.sh           # Gentoo Linux
+    ├── alpine/
+    │   └── install.sh           # Alpine Linux
+    ├── void/
+    │   └── install.sh           # Void Linux
+    └── nixos/
+        └── install.sh           # NixOS
+```
 
-## 📚 Documentation Détaillée
+## 🐧 Distributions Supportées
 
-### ZSH et Oh My ZSH
+### Famille Debian
 
-- [Documentation officielle ZSH](https://www.zsh.org/)
-- [Oh My ZSH](https://ohmyz.sh/)
-- Plugins recommandés :
-  - zsh-autosuggestions
-  - zsh-syntax-highlighting
-  - git
-  - sudo
+- **Ubuntu** (toutes versions)
+- **Debian** (stable, testing, unstable)
+- **Linux Mint**
+- **Elementary OS**
+- **Pop!\_OS**
+- **Kali Linux**
+- **Parrot Security OS**
 
-### Ressources des Distributions
+### Famille Arch
 
-#### Arch Linux
+- **Arch Linux**
+- **Manjaro**
+- **EndeavourOS**
+- **ArcoLinux**
+- **Garuda Linux**
+- **Artix Linux**
 
-- [Wiki Arch Linux](https://wiki.archlinux.org/)
-- [AUR (Arch User Repository)](https://aur.archlinux.org/)
-- [Packages officiels](https://archlinux.org/packages/)
-- [Guide d'installation yay](https://github.com/Jguer/yay)
+### Famille Red Hat
 
-#### Debian
+- **Fedora**
+- **CentOS**
+- **Red Hat Enterprise Linux (RHEL)**
+- **Rocky Linux**
+- **AlmaLinux**
+- **OpenSUSE**
 
-- [Site officiel Debian](https://www.debian.org/)
-- [Debian Packages](https://www.debian.org/distrib/packages)
-- [Backports Debian](https://backports.debian.org/)
-- [Wiki Debian](https://wiki.debian.org/)
+### Autres Distributions
+
+- **Gentoo Linux** - Compilation depuis les sources
+- **Alpine Linux** - Distribution légère basée sur musl
+- **Void Linux** - Rolling release avec runit
+- **NixOS** - Configuration déclarative
+
+## 🚀 Installation Rapide
+
+### Utilisation Simple
+
+```bash
+# Cloner le repository
+git clone https://github.com/N0tFond/Script.git
+cd Script
+
+# Rendre le script exécutable
+chmod +x install.sh
+
+# Lancer l'installation (le script détecte automatiquement votre distribution)
+./install.sh
+```
+
+### Installation Spécifique
+
+Si vous voulez forcer une distribution spécifique :
+
+```bash
+# Pour Ubuntu/Debian
+./distributions/debian/install.sh ubuntu
+
+# Pour Arch Linux
+./distributions/arch/install.sh arch
+
+# Pour Fedora
+./distributions/redhat/install.sh fedora
+```
+
+## 📦 Paquets Installés
+
+### Paquets de Base
+
+- **Outils système** : git, curl, wget, htop, tree, unzip
+- **Shell** : zsh avec Oh My Zsh
+- **Informations système** : neofetch
 
 ### Outils de Développement
 
-#### MariaDB
+- **Node.js** via NVM (version 22)
+- **Python 3** avec pip
+- **Compilateurs** : gcc, make, build-essential
+- **Git** avec configuration interactive
 
-- [Documentation MariaDB](https://mariadb.org/documentation/)
-- Version installée : 10.11.x
-- Port par défaut : 3306
+### Applications
 
-#### GitHub CLI
+- **Éditeur** : Visual Studio Code
+- **Navigateurs** : Firefox, Chrome
+- **Média** : VLC, Spotify
+- **Communication** : Discord
+- **Productivité** : LibreOffice
+- **Graphisme** : GIMP
 
-- [Documentation GitHub CLI](https://cli.github.com/manual/)
-- Commandes essentielles :
-  - `gh auth login` : Connexion à GitHub
-  - `gh repo create` : Créer un nouveau dépôt
-  - `gh pr create` : Créer une pull request
+### Gestionnaires de Paquets Alternatifs
 
-#### Node.js et NVM
+- **Flatpak** avec Flathub
+- **Snap** (Ubuntu)
+- **AUR helpers** (Arch - yay)
 
-- [Documentation Node.js](https://nodejs.org/docs)
-- [Guide NVM](https://github.com/nvm-sh/nvm)
-- Commandes NVM utiles :
-  - `nvm install node` : Installer la dernière version
-  - `nvm use node` : Utiliser la dernière version
-  - `nvm alias default node` : Définir la version par défaut
+## 🔧 Fonctionnalités par Distribution
 
-#### Visual Studio Code
+### Debian/Ubuntu
 
-- [Documentation VS Code](https://code.visualstudio.com/docs)
-- Extensions recommandées :
-  - ESLint
-  - Prettier
-  - GitLens
-  - Live Server
-  - Material Icon Theme
+- Configuration des dépôts officiels et tiers
+- Support PPA et dépôts externes
+- Installation via APT, Flatpak et Snap
 
-## 📋 Prérequis
+### Arch Linux
 
-- Système Arch Linux ou Debian
-- Accès root
-- `yay` (AUR helper) installé (uniquement pour Arch Linux)
-- Connexion Internet stable
+- Configuration Pacman optimisée
+- Installation AUR helper (yay)
+- Gestion des services avec systemd
+- Nettoyage automatique des paquets orphelins
 
-## 💻 Installation
+### Fedora/RHEL
 
-### Pour Arch Linux :
+- Configuration RPM Fusion
+- Gestion des référentiels EPEL
+- Support SELinux
+- Configuration firewalld
 
-1. Clonez le dépôt :
+### Gentoo
 
-```bash
-git clone https://github.com/N0tFond/Script.git
-cd Script
-```
+- Optimisation Portage (MAKEOPTS, USE flags)
+- Gestion des overlays avec Layman
+- Services OpenRC
+- Compilation parallèle optimisée
 
-2. Rendez le script exécutable :
+### Alpine
 
-```bash
-chmod +x install.sh
-```
+- Compatibilité glibc pour applications
+- Gestion légère des paquets
+- Services OpenRC
+- Optimisations musl libc
 
-3. Exécutez le script :
+### Void Linux
 
-```bash
-sudo ./install.sh
-```
+- Configuration XBPS optimisée
+- Services runit
+- Dépôts multilib et non-free
+- Gestion cache intelligente
 
-### Pour Debian :
+### NixOS
 
-1. Clonez le dépôt :
+- Configuration déclarative
+- Home-manager setup
+- Flakes support
+- Garbage collection automatique
 
-```bash
-git clone https://github.com/N0tFond/Script.git
-cd Script/DEBIAN_Version
-```
+## ⚙️ Options de Configuration
 
-2. Rendez le script exécutable :
+Le script propose plusieurs niveaux de personnalisation :
 
-```bash
-chmod +x install.sh
-```
+### Installation Interactive
 
-3. Exécutez le script :
+- Sélection des catégories de paquets
+- Choix des applications individuelles
+- Configuration des services système
+- Optimisations spécifiques à la distribution
 
-```bash
-sudo ./install.sh
-```
+### Configuration Automatisée
 
-## ⚙️ Versions des Paquets
+- Variables d'environnement pré-définies
+- Scripts de configuration par défaut
+- Nettoyage automatique post-installation
 
-- Node.js : v22.14.0
-- npm : 10.9.2
-- nvm : 0.40.2
+## 📝 Logging et Debugging
 
-## ⚠️ Notes Importantes
+- **Fichier de log** : `installation.log` dans le répertoire du script
+- **Codes de couleur** pour une meilleure lisibilité
+- **Gestion d'erreurs** complète avec rollback
+- **Progress bars** pour les opérations longues
 
-- Le script doit être exécuté avec les privilèges root
-- Un délai de 15 secondes est prévu après les mises à jour système
-- Assurez-vous d'avoir une sauvegarde de vos données importantes avant l'exécution
+## 🛡️ Sécurité
 
-## Author ✍️
+- **Vérification des privilèges** : Le script refuse de s'exécuter en root
+- **Validation des entrées** utilisateur
+- **Vérification des signatures** des dépôts
+- **Backup automatique** des configurations système
 
-| Author |
-| :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:
-| [<img src="https://avatars.githubusercontent.com/u/92156365?s=400&u=03e2069751224461782a03ba2dfa57a51c4e5438&v=4" width=115 style="border-radius: 15px;" ><br><sub>@notfound</sub>](https://github.com/N0tFond) <br><br> [![](https://img.shields.io/badge/Portfolio-255E63?style=for-the-badge&logo=About.me&logoColor=white)](https://notfound-dev.vercel.app)
+## 🚨 Prérequis
 
-## 📄 Licence
-
-Ce projet est sous licence MIT
+- **Connexion internet** active
+- **Privilèges sudo** pour l'utilisateur
+- **Bash 4.0+** minimum
+- **Distribution Linux supportée**
 
 ## 🤝 Contribution
 
-Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une issue ou un pull request.
+Les contributions sont les bienvenues ! Voici comment contribuer :
+
+1. **Fork** le projet
+2. **Créer** une branche feature (`git checkout -b feature/nouvelle-distribution`)
+3. **Commit** vos changements (`git commit -m 'Ajout support pour XYZ'`)
+4. **Push** vers la branche (`git push origin feature/nouvelle-distribution`)
+5. **Créer** une Pull Request
+
+### Ajouter une Nouvelle Distribution
+
+1. Créer un dossier dans `distributions/nom-famille/`
+2. Créer un script `install.sh` basé sur les templates existants
+3. Ajouter la détection dans le script principal
+4. Tester sur la distribution cible
+
+## 📄 Licence
+
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+## 👤 Auteur
+
+**NotFond**
+
+- GitHub : [@N0tFond](https://github.com/N0tFond)
+- Version : 2.0
+- Date : Septembre 2024
+
+## 🔄 Changelog
+
+### Version 2.0 (Septembre 2024)
+
+- ✨ Refactorisation complète avec architecture modulaire
+- 🚀 Support de 7 familles de distributions Linux
+- 📊 Interface utilisateur améliorée avec progress bars
+- 🔧 Configuration optimisée par distribution
+- 📝 Logging avancé et gestion d'erreurs
+- 🧹 Nettoyage automatique intelligent
+- 🎯 Installation modulaire et interactive
+
+### Version 1.0 (Mai 2024)
+
+- 🎉 Version initiale pour Arch et Debian
+- 📦 Installation de base avec quelques applications
+- 🐚 Configuration ZSH basique
+
+## ⚠️ Avertissements
+
+- **Testez toujours** sur une machine virtuelle avant utilisation en production
+- **Sauvegardez** vos données importantes avant installation
+- **Lisez** les logs en cas d'erreur pour diagnostiquer les problèmes
+- **Vérifiez** la compatibilité avec votre version spécifique de distribution
+
+## 🆘 Support
+
+En cas de problème :
+
+1. Consultez le fichier `installation.log`
+2. Vérifiez les issues GitHub existantes
+3. Créez une nouvelle issue avec le log d'erreur
+4. Spécifiez votre distribution et version exacte
+
+---
+
+**⭐ N'hésitez pas à star le projet si il vous a été utile !**
