@@ -62,20 +62,38 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo -e "${YELLOW}Nettoyage des anciens fichiers...${NC}"
     
-    # Backup first
+    # Create secure backup directory
+    local backup_dir="./backups"
+    mkdir -p "$backup_dir"
+    chmod 700 "$backup_dir"
+    
+    # Backup first with timestamp
+    local timestamp
+    timestamp=$(date +%Y%m%d_%H%M%S)
+    
     if [[ -f "./Arch_install.sh" ]]; then
-        cp "./Arch_install.sh" "./Arch_install.sh.backup.$(date +%Y%m%d)" 2>/dev/null || true
-        echo "✅ Backup créé: Arch_install.sh.backup"
+        if cp "./Arch_install.sh" "$backup_dir/Arch_install.sh.backup.$timestamp" 2>/dev/null; then
+            echo "✅ Backup créé: $backup_dir/Arch_install.sh.backup.$timestamp"
+        else
+            error "Failed to create backup for Arch_install.sh"
+            exit 1
+        fi
     fi
     
     if [[ -f "./DEBIAN_Version/Deb_install.sh" ]]; then
-        cp "./DEBIAN_Version/Deb_install.sh" "./DEBIAN_Version/Deb_install.sh.backup.$(date +%Y%m%d)" 2>/dev/null || true
-        echo "✅ Backup créé: DEBIAN_Version/Deb_install.sh.backup"
+        if cp "./DEBIAN_Version/Deb_install.sh" "$backup_dir/Deb_install.sh.backup.$timestamp" 2>/dev/null; then
+            echo "✅ Backup créé: $backup_dir/Deb_install.sh.backup.$timestamp"
+        else
+            error "Failed to create backup for DEBIAN_Version/Deb_install.sh"
+            exit 1
+        fi
     fi
     
     # Remove old files (keeping backups)
-    rm -f "./Arch_install.sh" 2>/dev/null || true
-    echo "🗑️  Supprimé: Arch_install.sh"
+    if [[ -f "./Arch_install.sh" ]]; then
+        rm -f "./Arch_install.sh" 2>/dev/null || true
+        echo "🗑️  Supprimé: Arch_install.sh"
+    fi
     
     # Keep DEBIAN_Version folder but could be removed later manually
     echo "ℹ️  DEBIAN_Version/ conservé (supprimez manuellement si désiré)"

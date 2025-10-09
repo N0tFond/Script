@@ -52,29 +52,53 @@ setup_repositories() {
     
     # GitHub CLI repository
     if confirm "Add GitHub CLI repository?" "y"; then
-        curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-        sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+        local keyring_file="/usr/share/keyrings/githubcli-archive-keyring.gpg"
+        if curl -fsSL --max-time 30 --retry 3 "https://cli.github.com/packages/githubcli-archive-keyring.gpg" | sudo dd of="$keyring_file" status=none; then
+            sudo chmod go+r "$keyring_file"
+            echo "deb [arch=$(dpkg --print-architecture) signed-by=$keyring_file] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+            success "GitHub CLI repository added"
+        else
+            error "Failed to add GitHub CLI repository"
+        fi
     fi
     
     # Visual Studio Code repository
     if confirm "Add Visual Studio Code repository?" "y"; then
-        wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-        sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-        sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
-        rm -f packages.microsoft.gpg
+        local temp_key
+        temp_key=$(mktemp)
+        if wget -qO "$temp_key" "https://packages.microsoft.com/keys/microsoft.asc" && [[ -s "$temp_key" ]]; then
+            gpg --dearmor < "$temp_key" | sudo dd of=/etc/apt/trusted.gpg.d/packages.microsoft.gpg status=none
+            sudo chmod 644 /etc/apt/trusted.gpg.d/packages.microsoft.gpg
+            echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
+            success "Visual Studio Code repository added"
+        else
+            error "Failed to add Visual Studio Code repository"
+        fi
+        rm -f "$temp_key"
     fi
     
     # Spotify repository
     if confirm "Add Spotify repository?" "y"; then
-        curl -sS https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
-        echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list > /dev/null
+        if curl -fsSL --max-time 30 --retry 3 "https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg" | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg; then
+            echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list > /dev/null
+            success "Spotify repository added"
+        else
+            error "Failed to add Spotify repository"
+        fi
     fi
     
     # Google Chrome repository (Ubuntu/Debian)
     if confirm "Add Google Chrome repository?" "y"; then
-        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-        echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list > /dev/null
+        local temp_key
+        temp_key=$(mktemp)
+        if wget -qO "$temp_key" "https://dl.google.com/linux/linux_signing_key.pub" && [[ -s "$temp_key" ]]; then
+            sudo apt-key add "$temp_key"
+            echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list > /dev/null
+            success "Google Chrome repository added"
+        else
+            error "Failed to add Google Chrome repository"
+        fi
+        rm -f "$temp_key"
     fi
     
     # Update package lists after adding repositories

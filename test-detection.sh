@@ -20,12 +20,13 @@ echo "=================================================================="
 detect_distro() {
     local distro=""
     
+    # Validate and sanitize file contents before parsing
     if [[ -f /etc/os-release ]]; then
-        source /etc/os-release
-        distro="$ID"
+        # Parse os-release safely without sourcing
+        distro=$(grep -oP '^ID=\K.*' /etc/os-release | tr -d '"' | head -n1)
     elif [[ -f /etc/lsb-release ]]; then
-        source /etc/lsb-release
-        distro="$DISTRIB_ID"
+        # Parse lsb-release safely without sourcing
+        distro=$(grep -oP '^DISTRIB_ID=\K.*' /etc/lsb-release | tr -d '"' | head -n1)
     elif [[ -f /etc/debian_version ]]; then
         distro="debian"
     elif [[ -f /etc/redhat-release ]]; then
@@ -33,6 +34,11 @@ detect_distro() {
     elif [[ -f /etc/arch-release ]]; then
         distro="arch"
     else
+        distro="unknown"
+    fi
+    
+    # Validate distro name contains only safe characters
+    if [[ -n "$distro" && ! "$distro" =~ ^[a-zA-Z0-9-]+$ ]]; then
         distro="unknown"
     fi
     

@@ -1,0 +1,8 @@
+=== Security Audit Started: jeu. 09 oct. 2025 14:43:58 CEST ===
+Audit Script: ./security-audit.sh
+Working Directory: /home/not/Documents/Dev/GitClone/Script
+=======================================
+[0;32m[2025-10-09 14:43:58] Starting security audit of Universal Linux Installer...[0m
+[0;36m[INFO] Checking for insecure coding patterns...[0m
+[0;36m[INFO] Auditing: security-audit.sh[0m
+[1;33m[WARNING] Found dangerous pipe-to-shell pattern in /home/not/Documents/Dev/GitClone/Script/security-audit.sh[0m

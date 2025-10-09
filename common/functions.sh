@@ -13,6 +13,68 @@ readonly CYAN='\033[0;36m'
 readonly WHITE='\033[1;37m'
 readonly NC='\033[0m' # No Color
 
+# Security and validation functions
+validate_url() {
+    local url="$1"
+    # Basic URL validation
+    if [[ "$url" =~ ^https?://[a-zA-Z0-9.-]+(/.*)?$ ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Secure download function with integrity checks
+secure_download() {
+    local url="$1"
+    local output_file="$2"
+    local max_size="${3:-10485760}"  # 10MB default
+    local expected_hash="$4"  # Optional SHA256 hash
+    
+    # Validate URL
+    if ! validate_url "$url"; then
+        error "Invalid URL format: $url"
+        return 1
+    fi
+    
+    # Create temporary file
+    local temp_file
+    temp_file=$(mktemp)
+    
+    # Download with security constraints
+    if curl -fsSL --max-time 60 --retry 3 --max-filesize "$max_size" "$url" -o "$temp_file"; then
+        # Verify file size
+        local file_size
+        file_size=$(stat -f%z "$temp_file" 2>/dev/null || stat -c%s "$temp_file" 2>/dev/null)
+        
+        if [[ "$file_size" -gt "$max_size" ]]; then
+            error "Downloaded file too large: $file_size bytes"
+            rm -f "$temp_file"
+            return 1
+        fi
+        
+        # Verify hash if provided
+        if [[ -n "$expected_hash" ]]; then
+            local actual_hash
+            actual_hash=$(sha256sum "$temp_file" | cut -d' ' -f1)
+            if [[ "$actual_hash" != "$expected_hash" ]]; then
+                error "Hash verification failed for $url"
+                error "Expected: $expected_hash"
+                error "Actual: $actual_hash"
+                rm -f "$temp_file"
+                return 1
+            fi
+        fi
+        
+        # Move to final location
+        mv "$temp_file" "$output_file"
+        return 0
+    else
+        rm -f "$temp_file"
+        return 1
+    fi
+}
+
 # Package categories
 declare -A BASE_PACKAGES=(
     ["essential"]="git curl wget zsh neofetch htop tree unzip"
@@ -79,23 +141,34 @@ show_progress() {
     fi
 }
 
-# User confirmation function
+# User confirmation function with timeout
 confirm() {
     local prompt="$1"
     local default="${2:-n}"
+    local timeout="${3:-30}"
     
+    local response
     while true; do
         if [[ "$default" == "y" ]]; then
-            read -r -p "$prompt [Y/n]: " response
-            response=${response,,}
-            [[ -z "$response" || "$response" == "y" || "$response" == "yes" ]] && return 0
-            [[ "$response" == "n" || "$response" == "no" ]] && return 1
+            if read -t "$timeout" -r -p "$prompt [Y/n]: " response; then
+                response=${response,,}
+                [[ -z "$response" || "$response" == "y" || "$response" == "yes" ]] && return 0
+                [[ "$response" == "n" || "$response" == "no" ]] && return 1
+            else
+                warn "Timeout reached, using default: $default"
+                [[ "$default" == "y" ]] && return 0 || return 1
+            fi
         else
-            read -r -p "$prompt [y/N]: " response
-            response=${response,,}
-            [[ "$response" == "y" || "$response" == "yes" ]] && return 0
-            [[ -z "$response" || "$response" == "n" || "$response" == "no" ]] && return 1
+            if read -t "$timeout" -r -p "$prompt [y/N]: " response; then
+                response=${response,,}
+                [[ "$response" == "y" || "$response" == "yes" ]] && return 0
+                [[ -z "$response" || "$response" == "n" || "$response" == "no" ]] && return 1
+            else
+                warn "Timeout reached, using default: $default"
+                [[ "$default" == "y" ]] && return 0 || return 1
+            fi
         fi
+        warn "Please answer yes or no."
     done
 }
 
@@ -162,8 +235,34 @@ install_nodejs() {
     if confirm "Install Node.js $NODE_VERSION via NVM?" "y"; then
         info "Installing NVM..."
         
-        # Download and install NVM
-        curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh" | bash
+        # Validate NVM version format
+        if [[ ! "$NVM_VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            error "Invalid NVM version format: $NVM_VERSION"
+            return 1
+        fi
+        
+        # Download and install NVM with security checks
+        local nvm_url="https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh"
+        local temp_script
+        temp_script=$(mktemp)
+        
+        # Download with security checks
+        if ! curl -fsSL --max-time 30 --retry 3 "$nvm_url" -o "$temp_script"; then
+            error "Failed to download NVM installer"
+            rm -f "$temp_script"
+            return 1
+        fi
+        
+        # Basic validation of downloaded script
+        if [[ ! -s "$temp_script" ]] || ! grep -q "nvm" "$temp_script"; then
+            error "Downloaded NVM script appears invalid"
+            rm -f "$temp_script"
+            return 1
+        fi
+        
+        # Execute the script
+        bash "$temp_script"
+        rm -f "$temp_script"
         
         # Load NVM
         export NVM_DIR="$HOME/.nvm"
@@ -172,6 +271,13 @@ install_nodejs() {
         
         if command -v nvm >/dev/null 2>&1; then
             info "Installing Node.js version $NODE_VERSION..."
+            
+            # Validate Node version format
+            if [[ ! "$NODE_VERSION" =~ ^[0-9]+$ ]]; then
+                error "Invalid Node.js version format: $NODE_VERSION"
+                return 1
+            fi
+            
             nvm install "$NODE_VERSION"
             nvm use "$NODE_VERSION"
             nvm alias default "$NODE_VERSION"
@@ -195,10 +301,29 @@ setup_dev_environment() {
     if confirm "Setup development environment (Git, SSH, etc.)?" "y"; then
         info "Configuring development environment..."
         
-        # Git configuration
+        # Git configuration with input validation
         if command -v git >/dev/null 2>&1; then
-            read -r -p "Enter your Git username: " git_username
-            read -r -p "Enter your Git email: " git_email
+            local git_username git_email
+            
+            # Validate Git username
+            while true; do
+                read -r -p "Enter your Git username: " git_username
+                if [[ -n "$git_username" && "$git_username" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+                    break
+                else
+                    warn "Invalid username. Use only alphanumeric characters, dots, underscores, and hyphens."
+                fi
+            done
+            
+            # Validate Git email
+            while true; do
+                read -r -p "Enter your Git email: " git_email
+                if [[ "$git_email" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
+                    break
+                else
+                    warn "Invalid email format. Please enter a valid email address."
+                fi
+            done
             
             if [[ -n "$git_username" && -n "$git_email" ]]; then
                 git config --global user.name "$git_username"
@@ -213,7 +338,16 @@ setup_dev_environment() {
         # Generate SSH key if requested
         if confirm "Generate SSH key for Git/GitHub?" "n"; then
             if [[ ! -f ~/.ssh/id_rsa ]]; then
+                # Ensure SSH directory exists with proper permissions
+                mkdir -p ~/.ssh
+                chmod 700 ~/.ssh
+                
                 ssh-keygen -t rsa -b 4096 -C "$git_email" -f ~/.ssh/id_rsa -N ""
+                
+                # Set proper permissions for SSH key
+                chmod 600 ~/.ssh/id_rsa
+                chmod 644 ~/.ssh/id_rsa.pub
+                
                 success "SSH key generated at ~/.ssh/id_rsa.pub"
                 info "Add this key to your GitHub account:"
                 cat ~/.ssh/id_rsa.pub
@@ -222,11 +356,26 @@ setup_dev_environment() {
             fi
         fi
         
-        # Setup ZSH with Oh My Zsh
+        # Setup ZSH with Oh My Zsh (with security checks)
         if command -v zsh >/dev/null 2>&1 && confirm "Install Oh My Zsh?" "y"; then
             if [[ ! -d ~/.oh-my-zsh ]]; then
-                sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-                success "Oh My Zsh installed"
+                local temp_script
+                temp_script=$(mktemp)
+                
+                # Download Oh My Zsh installer with security checks
+                if curl -fsSL --max-time 30 --retry 3 "https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh" -o "$temp_script"; then
+                    # Basic validation
+                    if grep -q "oh-my-zsh" "$temp_script"; then
+                        sh "$temp_script" --unattended
+                        success "Oh My Zsh installed"
+                    else
+                        error "Downloaded Oh My Zsh script appears invalid"
+                    fi
+                else
+                    error "Failed to download Oh My Zsh installer"
+                fi
+                
+                rm -f "$temp_script"
             else
                 warn "Oh My Zsh already installed"
             fi
