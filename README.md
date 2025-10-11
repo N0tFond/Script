@@ -148,20 +148,20 @@ Créez une issue GitHub avec les informations suivantes :
 
 ### 🛡️ Recommandations de Sécurité
 
-> [!CAUTION] > **Tests obligatoires** : Toujours tester sur une machine virtuelle avant déploiement en production.
+[!CAUTION]
+**Tests obligatoires** : Toujours tester sur une machine virtuelle avant déploiement en production.
 
 - **Sauvegarde complète** des données critiques
 - **Point de restauration** système si disponible
 - **Vérification des privilèges** sudo avant exécution
 - **Connexion internet stable** requise pendant l'installation
 
-> [!TIP] > **Mode debug** : Ajoutez `bash -x` pour un diagnostic détaillé
->
-> ```bash
-> bash -x ./install.sh
-> ```
->
-> ---
+[!TIP]
+**Mode debug** : Ajoutez `bash -x` pour un diagnostic détaillé
+
+```bash
+bash -x ./install.sh
+```
 
 ## 📦 Paquets Installés
 
@@ -311,6 +311,19 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 - Date : Septembre 2024
 
 ## 🔄 Changelog
+
+### Version 3.0 (Octobre 2025)
+
+- 🔒 **Audit de sécurité complet** avec rapport détaillé et configuration renforcée
+- 🛡️ **Scripts de sécurité** : `security-audit.sh` pour vérifications système automatisées
+- 📋 **Tests de détection** améliorés avec `test-detection.sh` pour validation multi-distribution
+- 🔄 **Script de migration** `migrate.sh` pour mise à jour fluide entre versions
+- 📚 **Documentation multilingue** avec README en anglais (`EN_README.md`)
+- 🔧 **Configuration de sécurité** centralisée via `security.conf`
+- 🧪 **Tests automatisés** pour garantir la compatibilité cross-distribution
+- 🔍 **Détection de vulnérabilités** et recommandations de sécurité
+- 📊 **Métriques de performance** et monitoring des installations
+- 🛠️ **Fonctions communes optimisées** dans `common/functions.sh`
 
 ### Version 2.0 (Septembre 2024)
 
