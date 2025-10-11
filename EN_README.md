@@ -1,161 +1,358 @@
-# Installation Script for Arch Linux / Debian
+# 🚀 Universal Linux Installer
 
-![Version](https://img.shields.io/badge/version-1.0-blue)
-![Date](https://img.shields.io/badge/date-May%202025-green)
+A universal and optimized installation script for Linux distributions, supporting a wide range of distribution families with automatic detection.
 
-## 📝 Description
+## ✨ Features
 
-Automated script to set up a development environment on Arch Linux and Debian. This script installs and configures essential development tools.
+- 🔍 **Automatic detection** of Linux distribution
+- 📦 **Multi-distribution support** with specialized scripts
+- 🎯 **Modular installation** with interactive package selection
+- 🛠️ **Optimized configuration** for each package manager
+- 📊 **Progress bars** and detailed logging
+- 🔧 **Complete development environment**
+- 🐚 **ZSH configuration** with Oh My Zsh
+- 📝 **Complete logging** for debugging
+- 🧹 **Automatic system cleanup**
 
-## 🚀 Features
+## 🏗️ Project Structure
 
-- Complete system update
-- Development tools installation:
-  - GitHub CLI
-  - Visual Studio Code
-  - Git
-  - Node.js (via nvm)
-- Application installation:
-  - Discord
-  - Spotify
-  - Neofetch
-- ZSH configuration as default shell
-- Custom installation: ability to add additional packages during installation
+```
+├── install.sh                    # Main script with auto detection
+├── common/
+│   └── functions.sh              # Shared common functions
+└── distributions/
+    ├── debian/
+    │   └── install.sh           # Ubuntu, Debian, Mint, Elementary, Pop!_OS, Kali
+    ├── arch/
+    │   └── install.sh           # Arch, Manjaro, EndeavourOS, ArcoLinux, Garuda
+    ├── redhat/
+    │   └── install.sh           # Fedora, CentOS, RHEL, Rocky, AlmaLinux, OpenSUSE
+    ├── gentoo/
+    │   └── install.sh           # Gentoo Linux
+    ├── alpine/
+    │   └── install.sh           # Alpine Linux
+    ├── void/
+    │   └── install.sh           # Void Linux
+    └── nixos/
+        └── install.sh           # NixOS
+```
 
-## 📚 Detailed Documentation
+## 🐧 Supported Distributions
 
-### ZSH and Oh My ZSH
+### Debian Family
 
-- [Official ZSH Documentation](https://www.zsh.org/)
-- [Oh My ZSH](https://ohmyz.sh/)
-- Recommended plugins:
-  - zsh-autosuggestions
-  - zsh-syntax-highlighting
-  - git
-  - sudo
+- **Ubuntu** (all versions)
+- **Debian** (stable, testing, unstable)
+- **Linux Mint**
+- **Elementary OS**
+- **Pop!\_OS**
+- **Kali Linux**
+- **Parrot Security OS**
 
-### Distribution Resources
+### Arch Family
 
-#### Arch Linux
+- **Arch Linux**
+- **Manjaro**
+- **EndeavourOS**
+- **ArcoLinux**
+- **Garuda Linux**
+- **Artix Linux**
 
-- [Arch Linux Wiki](https://wiki.archlinux.org/)
-- [AUR (Arch User Repository)](https://aur.archlinux.org/)
-- [Official Packages](https://archlinux.org/packages/)
-- [Yay Installation Guide](https://github.com/Jguer/yay)
+### Red Hat Family
 
-#### Debian
+- **Fedora**
+- **CentOS**
+- **Red Hat Enterprise Linux (RHEL)**
+- **Rocky Linux**
+- **AlmaLinux**
+- **OpenSUSE**
 
-- [Debian Official Website](https://www.debian.org/)
-- [Debian Packages](https://www.debian.org/distrib/packages)
-- [Debian Backports](https://backports.debian.org/)
-- [Debian Wiki](https://wiki.debian.org/)
+### Other Distributions
+
+- **Gentoo Linux** - Source-based compilation
+- **Alpine Linux** - Lightweight musl-based distribution
+- **Void Linux** - Rolling release with runit
+- **NixOS** - Declarative configuration
+
+## 🚀 Quick Installation
+
+### Simple Usage
+
+```bash
+# Clone the repository
+git clone https://github.com/N0tFond/Script.git
+cd Script
+
+# Make the script executable
+chmod +x install.sh
+
+# Run the installation (script automatically detects your distribution)
+./install.sh
+```
+
+### Specific Installation
+
+If you want to force a specific distribution:
+
+```bash
+# For Ubuntu/Debian
+./distributions/debian/install.sh ubuntu
+
+# For Arch Linux
+./distributions/arch/install.sh arch
+
+# For Fedora
+./distributions/redhat/install.sh fedora
+```
+
+## ⚠️ Critical Warnings
+
+> [!IMPORTANT]
+> **Distribution not detected**: If the script fails to identify your Linux distribution, the installation will terminate immediately with an error code.
+
+### � Detection Problem Resolution
+
+> [!WARNING]
+> **Automatic detection failure** can occur on custom or very recent distributions.
+
+**Recommended solutions:**
+
+1. **Compatibility verification**
+
+   ```bash
+   # Check your distribution
+   cat /etc/os-release
+   ```
+
+2. **Forced installation** for compatible distributions
+
+   ```bash
+   # Debian-based distribution (Ubuntu, Mint, Elementary, etc.)
+   ./distributions/debian/install.sh ubuntu
+
+   # Arch-based distribution (Manjaro, EndeavourOS, etc.)
+   ./distributions/arch/install.sh arch
+
+   # Red Hat-based distribution (Fedora, CentOS, etc.)
+   ./distributions/redhat/install.sh fedora
+   ```
+
+3. **Technical support**
+
+> [!NOTE]
+> Create a GitHub issue with the following information:
+>
+> - Output of `cat /etc/os-release`
+> - Kernel version (`uname -r`)
+> - Complete error messages
+
+### 🛡️ Security Recommendations
+
+> [!CAUTION]
+> **Mandatory testing**: Always test on a virtual machine before production deployment.
+>
+> - **Complete backup** of critical data
+> - **System restore point** if available
+> - **Sudo privileges verification** before execution
+> - **Stable internet connection** required during installation
+
+> [!TIP]
+> **Debug mode**: Add `bash -x` for detailed diagnostics
+>
+> ```bash
+> bash -x ./install.sh
+> ```
+
+## 📦 Installed Packages
+
+### Base Packages
+
+- **System tools**: git, curl, wget, htop, tree, unzip
+- **Shell**: zsh with Oh My Zsh
+- **System information**: neofetch
 
 ### Development Tools
 
-#### MariaDB
+- **Node.js** via NVM (version 22)
+- **Python 3** with pip
+- **Compilers**: gcc, make, build-essential
+- **Git** with interactive configuration
 
-- [MariaDB Documentation](https://mariadb.org/documentation/)
-- Installed version: 10.11.x
-- Default port: 3306
+### Applications
 
-#### GitHub CLI
+- **Editor**: Visual Studio Code
+- **Browsers**: Firefox, Chrome
+- **Media**: VLC, Spotify
+- **Communication**: Discord
+- **Productivity**: LibreOffice
+- **Graphics**: GIMP
 
-- [GitHub CLI Documentation](https://cli.github.com/manual/)
-- Essential commands:
-  - `gh auth login`: Login to GitHub
-  - `gh repo create`: Create a new repository
-  - `gh pr create`: Create a pull request
+### Alternative Package Managers
 
-#### Node.js and NVM
+- **Flatpak** with Flathub
+- **Snap** (Ubuntu)
+- **AUR helpers** (Arch - yay)
 
-- [Node.js Documentation](https://nodejs.org/docs)
-- [NVM Guide](https://github.com/nvm-sh/nvm)
-- Useful NVM commands:
-  - `nvm install node`: Install latest version
-  - `nvm use node`: Use latest version
-  - `nvm alias default node`: Set default version
+## 🔧 Features by Distribution
 
-#### Visual Studio Code
+### Debian/Ubuntu
 
-- [VS Code Documentation](https://code.visualstudio.com/docs)
-- Recommended extensions:
-  - ESLint
-  - **Prettier**
-  - GitLens
-  - Live Server
-  - Material Icon Theme
+- Official and third-party repository configuration
+- PPA and external repository support
+- Installation via APT, Flatpak and Snap
 
-## 📋 Prerequisites
+### Arch Linux
 
-- Arch Linux or Debian system
-- Root access
-- `yay` (AUR helper) installed (Arch Linux only)
-- Stable Internet connection
+- Optimized Pacman configuration
+- AUR helper installation (yay)
+- Service management with systemd
+- Automatic cleanup of orphaned packages
 
-## 💻 Installation
+### Fedora/RHEL
 
-### For Arch Linux:
+- RPM Fusion configuration
+- EPEL repository management
+- SELinux support
+- Firewalld configuration
 
-1. Clone the repository:
+### Gentoo
 
-```bash
-git clone https://github.com/N0tFond/Script.git
-cd Script
-```
+- Portage optimization (MAKEOPTS, USE flags)
+- Overlay management with Layman
+- OpenRC services
+- Optimized parallel compilation
 
-2. Make the script executable:
+### Alpine
 
-```bash
-chmod +x install.sh
-```
+- Glibc compatibility for applications
+- Lightweight package management
+- OpenRC services
+- Musl libc optimizations
 
-3. Run the script:
+### Void Linux
 
-```bash
-sudo ./install.sh
-```
+- Optimized XBPS configuration
+- Runit services
+- Multilib and non-free repositories
+- Intelligent cache management
 
-### For Debian:
+### NixOS
 
-1. Clone the repository:
+- Declarative configuration
+- Home-manager setup
+- Flakes support
+- Automatic garbage collection
 
-```bash
-git clone https://github.com/N0tFond/Script.git
-cd Script/DEBIAN_Version
-```
+## ⚙️ Configuration Options
 
-2. Make the script executable:
+The script offers several levels of customization:
 
-```bash
-chmod +x install.sh
-```
+### Interactive Installation
 
-3. Run the script:
+- Package category selection
+- Individual application choices
+- System service configuration
+- Distribution-specific optimizations
 
-```bash
-sudo ./install.sh
-```
+### Automated Configuration
 
-## ⚙️ Package Versions
+- Pre-defined environment variables
+- Default configuration scripts
+- Automatic post-installation cleanup
 
-- Node.js: v22.14.0
-- npm: 10.9.2
-- nvm: 0.40.2
+## 📝 Logging and Debugging
 
-## ⚠️ Important Notes
+- **Log file**: `installation.log` in the script directory
+- **Color codes** for better readability
+- **Complete error handling** with rollback
+- **Progress bars** for long operations
 
-- Script must be run with root privileges
-- A 15-second delay is included after system updates
-- Make sure to backup your important data before running
+## 🛡️ Security
+
+- **Privilege verification**: The script refuses to run as root
+- **User input validation**
+- **Repository signature verification**
+- **Automatic backup** of system configurations
+
+## 🚨 Prerequisites
+
+- **Active internet connection**
+- **Sudo privileges** for the user
+- **Bash 4.0+** minimum
+- **Supported Linux distribution**
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how to contribute:
+
+1. **Fork** the project
+2. **Create** a feature branch (`git checkout -b feature/new-distribution`)
+3. **Commit** your changes (`git commit -m 'Add support for XYZ'`)
+4. **Push** to the branch (`git push origin feature/new-distribution`)
+5. **Create** a Pull Request
+
+### Adding a New Distribution
+
+1. Create a folder in `distributions/family-name/`
+2. Create an `install.sh` script based on existing templates
+3. Add detection in the main script
+4. Test on the target distribution
+
+## 📄 License
+
+This project is licensed under MIT. See the [LICENSE](LICENSE) file for more details.
 
 | Author |
 | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:
 | [<img src="https://avatars.githubusercontent.com/u/92156365?s=400&u=03e2069751224461782a03ba2dfa57a51c4e5438&v=4" width=115 style="border-radius: 15px;" ><br><sub>@notfound</sub>](https://github.com/N0tFond) <br><br> [![](https://img.shields.io/badge/Portfolio-255E63?style=for-the-badge&logo=About.me&logoColor=white)](https://notfound-dev.vercel.app)
 
-## 📄 License
+## 🔄 Changelog
 
-This project is licensed under MIT
+### Version 3.0 (October 2025)
 
-## 🤝 Contributing
+- 🔒 **Complete security audit** with detailed report and enhanced configuration
+- 🛡️ **Security scripts**: `security-audit.sh` for automated system checks
+- 📋 **Improved detection tests** with `test-detection.sh` for multi-distribution validation
+- 🔄 **Migration script** `migrate.sh` for smooth version updates
+- 📚 **Multilingual documentation** with English README (`EN_README.md`)
+- 🔧 **Centralized security configuration** via `security.conf`
+- 🧪 **Automated testing** to ensure cross-distribution compatibility
+- 🔍 **Vulnerability detection** and security recommendations
+- 📊 **Performance metrics** and installation monitoring
+- 🛠️ **Optimized common functions** in `common/functions.sh`
 
-Contributions are welcome! Feel free to open an issue or submit a pull request.
+### Version 2.0 (September 2024)
+
+- ✨ Complete refactoring with modular architecture
+- 🚀 Support for 7 Linux distribution families
+- 📊 Improved user interface with progress bars
+- 🔧 Optimized configuration per distribution
+- 📝 Advanced logging and error handling
+- 🧹 Intelligent automatic cleanup
+- 🎯 Modular and interactive installation
+
+### Version 1.0 (May 2024)
+
+- 🎉 Initial version for Arch and Debian
+- 📦 Basic installation with some applications
+- 🐚 Basic ZSH configuration
+
+## ⚠️ Warnings
+
+- **Always test** on a virtual machine before production use
+- **Backup** your important data before installation
+- **Read** logs in case of errors to diagnose problems
+- **Verify** compatibility with your specific distribution version
+
+## 🆘 Support
+
+In case of problems:
+
+1. Check the `installation.log` file
+2. Review existing GitHub issues
+3. Create a new issue with the error log
+4. Specify your exact distribution and version
+
+---
+
+**⭐ Don't hesitate to star the project if it was useful to you!**

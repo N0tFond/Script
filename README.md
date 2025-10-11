@@ -306,11 +306,9 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 
 ## 👤 Auteur
 
-**NotFond**
-
-- GitHub : [@N0tFond](https://github.com/N0tFond)
-- Version : 2.0
-- Date : Septembre 2024
+| Auteur |
+| :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:
+| [<img src="https://avatars.githubusercontent.com/u/92156365?s=400&u=03e2069751224461782a03ba2dfa57a51c4e5438&v=4" width=115 style="border-radius: 15px;" ><br><sub>@notfound</sub>](https://github.com/N0tFond) <br><br> [![](https://img.shields.io/badge/Portfolio-255E63?style=for-the-badge&logo=About.me&logoColor=white)](https://notfound-dev.vercel.app)
 
 ## 🔄 Changelog
 
