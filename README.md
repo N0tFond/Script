@@ -156,7 +156,8 @@ Si vous voulez forcer une distribution spécifique :
 > - **Vérification des privilèges** sudo avant exécution
 > - **Connexion internet stable** requise pendant l'installation
 
-> [!TIP] > **Mode debug** : Ajoutez `bash -x` pour un diagnostic détaillé
+> [!TIP]
+> **Mode debug** : Ajoutez `bash -x` pour un diagnostic détaillé
 >
 > ```bash
 > bash -x ./install.sh
