@@ -107,13 +107,13 @@ Si vous voulez forcer une distribution spécifique :
 
 ## ⚠️ Avertissements Critiques
 
-[!IMPORTANT]
-**Distribution non détectée** : Si le script échoue à identifier votre distribution Linux, l'installation se terminera immédiatement avec un code d'erreur.
+> [!IMPORTANT]
+> **Distribution non détectée** : Si le script échoue à identifier votre distribution Linux, l'installation se terminera immédiatement avec un code d'erreur.
 
 ### 🔍 Résolution des Problèmes de Détection
 
-[!WARNING]
-**Échec de détection automatique** peut survenir sur des distributions personnalisées ou très récentes.
+> [!WARNING]
+> **Échec de détection automatique** peut survenir sur des distributions personnalisées ou très récentes.
 
 **Solutions recommandées :**
 
@@ -139,29 +139,30 @@ Si vous voulez forcer une distribution spécifique :
 
 3. **Support technique**
 
-[!NOTE]
-Créez une issue GitHub avec les informations suivantes :
-
-- Sortie de `cat /etc/os-release`
-- Version du kernel (`uname -r`)
-- Messages d'erreur complets
+> [!NOTE]
+> Créez une issue GitHub avec les informations suivantes :
+>
+> - Sortie de `cat /etc/os-release`
+> - Version du kernel (`uname -r`)
+> - Messages d'erreur complets
 
 ### 🛡️ Recommandations de Sécurité
 
-[!CAUTION]
-**Tests obligatoires** : Toujours tester sur une machine virtuelle avant déploiement en production.
+> [!CAUTION]
+> **Tests obligatoires** : Toujours tester sur une machine virtuelle avant déploiement en production.
+>
+> - **Sauvegarde complète** des données critiques
+> - **Point de restauration** système si disponible
+> - **Vérification des privilèges** sudo avant exécution
+> - **Connexion internet stable** requise pendant l'installation
 
-- **Sauvegarde complète** des données critiques
-- **Point de restauration** système si disponible
-- **Vérification des privilèges** sudo avant exécution
-- **Connexion internet stable** requise pendant l'installation
-
-[!TIP]
-**Mode debug** : Ajoutez `bash -x` pour un diagnostic détaillé
-
-```bash
-bash -x ./install.sh
-```
+> [!TIP] > **Mode debug** : Ajoutez `bash -x` pour un diagnostic détaillé
+>
+> ```bash
+> bash -x ./install.sh
+> ```
+>
+> --
 
 ## 📦 Paquets Installés
 
