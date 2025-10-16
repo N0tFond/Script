@@ -80,7 +80,8 @@ setup_repositories() {
     # Spotify repository
     if confirm "Add Spotify repository?" "y"; then
         if curl -fsSL --max-time 30 --retry 3 "https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg" | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg; then
-            echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list > /dev/null
+            sudo chmod 644 /etc/apt/trusted.gpg.d/spotify.gpg
+            echo "deb https://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list > /dev/null
             success "Spotify repository added"
         else
             error "Failed to add Spotify repository"
@@ -89,15 +90,14 @@ setup_repositories() {
     
     # Google Chrome repository (Ubuntu/Debian)
     if confirm "Add Google Chrome repository?" "y"; then
-        local temp_key
-        temp_key=$(mktemp)
-        if wget -qO "$temp_key" "https://dl.google.com/linux/linux_signing_key.pub" && [[ -s "$temp_key" ]]; then
-            sudo apt-key add "$temp_key"
-            echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list > /dev/null
+        if curl -fsSL --max-time 30 --retry 3 "https://dl.google.com/linux/linux_signing_key.pub" | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/google-chrome.gpg; then
+            sudo chmod 644 /etc/apt/trusted.gpg.d/google-chrome.gpg
+            echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/google-chrome.gpg] https://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list > /dev/null
             success "Google Chrome repository added"
         else
             error "Failed to add Google Chrome repository"
         fi
+    fi
         rm -f "$temp_key"
     fi
     
@@ -275,7 +275,28 @@ configure_shell() {
         # Install Oh My Zsh if requested
         if confirm "Install Oh My Zsh?" "y"; then
             if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
-                sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+                # Secure download and install Oh My Zsh
+                local temp_script
+                temp_script=$(mktemp)
+                local omz_url="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+                
+                info "Downloading Oh My Zsh installer securely..."
+                if curl -fsSL --max-time 30 --retry 3 "$omz_url" -o "$temp_script"; then
+                    # Basic validation
+                    if [[ -s "$temp_script" ]] && grep -q "oh-my-zsh" "$temp_script"; then
+                        sh "$temp_script" --unattended
+                        success "Oh My Zsh installed securely"
+                    else
+                        error "Downloaded Oh My Zsh script appears invalid"
+                        rm -f "$temp_script"
+                        return 1
+                    fi
+                else
+                    error "Failed to download Oh My Zsh installer"
+                    rm -f "$temp_script"
+                    return 1
+                fi
+                rm -f "$temp_script"
                 
                 # Install popular plugins
                 git clone https://github.com/zsh-users/zsh-autosuggestions "${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions" 2>/dev/null || true

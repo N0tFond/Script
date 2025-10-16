@@ -347,9 +347,15 @@ cleanup_distribution_specific() {
     local orphans
     if orphans=$(pacman -Qtdq 2>/dev/null); then
         if [[ -n "$orphans" ]]; then
-            info "Removing orphaned packages: $orphans"
-            # shellcheck disable=SC2086
-            sudo pacman -Rns --noconfirm $orphans
+            info "Removing orphaned packages:"
+            echo "$orphans"
+            # Split into array safely to avoid injection
+            local -a orphan_array
+            IFS=$'\n' read -r -d '' -a orphan_array <<< "$orphans" || true
+            if [[ ${#orphan_array[@]} -gt 0 ]]; then
+                sudo pacman -Rns --noconfirm "${orphan_array[@]}"
+                success "Orphaned packages removed"
+            fi
         fi
     fi
     
@@ -380,7 +386,28 @@ configure_arch_shell() {
         # Install Oh My Zsh
         if confirm "Install Oh My Zsh with Arch-specific configuration?" "y"; then
             if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
-                sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+                # Secure download and install Oh My Zsh
+                local temp_script
+                temp_script=$(mktemp)
+                local omz_url="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+                
+                info "Downloading Oh My Zsh installer securely..."
+                if curl -fsSL --max-time 30 --retry 3 "$omz_url" -o "$temp_script"; then
+                    # Basic validation
+                    if [[ -s "$temp_script" ]] && grep -q "oh-my-zsh" "$temp_script"; then
+                        sh "$temp_script" --unattended
+                        success "Oh My Zsh installed securely"
+                    else
+                        error "Downloaded Oh My Zsh script appears invalid"
+                        rm -f "$temp_script"
+                        return 1
+                    fi
+                else
+                    error "Failed to download Oh My Zsh installer"
+                    rm -f "$temp_script"
+                    return 1
+                fi
+                rm -f "$temp_script"
                 
                 # Install useful plugins
                 git clone https://github.com/zsh-users/zsh-autosuggestions "${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions" 2>/dev/null || true

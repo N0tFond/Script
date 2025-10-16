@@ -51,7 +51,7 @@ setup_repositories() {
         if confirm "Enable community repository?" "y"; then
             local alpine_version
             alpine_version=$(cat /etc/alpine-release | cut -d'.' -f1,2)
-            echo "http://dl-cdn.alpinelinux.org/alpine/v${alpine_version}/community" | sudo tee -a "$repos_file" > /dev/null
+            echo "https://dl-cdn.alpinelinux.org/alpine/v${alpine_version}/community" | sudo tee -a "$repos_file" > /dev/null
             sudo apk update
             success "Community repository enabled"
         fi
@@ -59,9 +59,9 @@ setup_repositories() {
     
     # Enable edge repositories for latest packages
     if confirm "Enable edge repositories? (Warning: May be unstable)" "n"; then
-        echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" | sudo tee -a "$repos_file" > /dev/null
-        echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" | sudo tee -a "$repos_file" > /dev/null
-        echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" | sudo tee -a "$repos_file" > /dev/null
+        echo "https://dl-cdn.alpinelinux.org/alpine/edge/main" | sudo tee -a "$repos_file" > /dev/null
+        echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" | sudo tee -a "$repos_file" > /dev/null
+        echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" | sudo tee -a "$repos_file" > /dev/null
         sudo apk update
         success "Edge repositories enabled"
     fi
@@ -235,7 +235,28 @@ configure_alpine_shell() {
                 # Install curl if not present
                 command -v curl >/dev/null 2>&1 || sudo apk add curl
                 
-                sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+                # Secure download and install Oh My Zsh
+                local temp_script
+                temp_script=$(mktemp)
+                local omz_url="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+                
+                info "Downloading Oh My Zsh installer securely..."
+                if curl -fsSL --max-time 30 --retry 3 "$omz_url" -o "$temp_script"; then
+                    # Basic validation
+                    if [[ -s "$temp_script" ]] && grep -q "oh-my-zsh" "$temp_script"; then
+                        sh "$temp_script" --unattended
+                        success "Oh My Zsh installed securely"
+                    else
+                        error "Downloaded Oh My Zsh script appears invalid"
+                        rm -f "$temp_script"
+                        return 1
+                    fi
+                else
+                    error "Failed to download Oh My Zsh installer"
+                    rm -f "$temp_script"
+                    return 1
+                fi
+                rm -f "$temp_script"
                 
                 # Alpine-specific aliases
                 cat >> "$HOME/.zshrc" << 'EOF'

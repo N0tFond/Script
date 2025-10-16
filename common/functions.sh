@@ -13,13 +13,41 @@ readonly CYAN='\033[0;36m'
 readonly WHITE='\033[1;37m'
 readonly NC='\033[0m' # No Color
 
+# Check disk space before installation
+check_disk_space() {
+    local required_mb="${1:-5000}"  # 5GB default minimum
+    local available_mb
+    available_mb=$(df -m / | awk 'NR==2 {print $4}')
+    
+    if [[ "$available_mb" -lt "$required_mb" ]]; then
+        error "Insufficient disk space: ${available_mb}MB available, ${required_mb}MB required"
+        return 1
+    fi
+    
+    info "Disk space check: ${available_mb}MB available (${required_mb}MB required) ✓"
+    return 0
+}
+
+# Detect distribution robustly
+detect_distro() {
+    if [[ -f /etc/os-release ]]; then
+        # shellcheck disable=SC1091
+        source /etc/os-release
+        echo "${ID}"
+    else
+        error "Unable to detect distribution"
+        return 1
+    fi
+}
+
 # Security and validation functions
 validate_url() {
     local url="$1"
-    # Basic URL validation
-    if [[ "$url" =~ ^https?://[a-zA-Z0-9.-]+(/.*)?$ ]]; then
+    # Force HTTPS only - no HTTP allowed for security
+    if [[ "$url" =~ ^https://[a-zA-Z0-9.-]+(:[0-9]+)?(/.*)?$ ]]; then
         return 0
     else
+        error "Only HTTPS URLs are allowed for security reasons"
         return 1
     fi
 }
@@ -141,11 +169,19 @@ show_progress() {
     fi
 }
 
+# Global non-interactive flag (can be set via environment or CLI)
+NONINTERACTIVE="${NONINTERACTIVE:-0}"
+
 # User confirmation function with timeout
 confirm() {
     local prompt="$1"
     local default="${2:-n}"
-    local timeout="${3:-30}"
+    local timeout="${3:-15}"  # Reduced from 30 to 15 seconds
+    
+    # If non-interactive mode, use default without prompting
+    if [[ "$NONINTERACTIVE" -eq 1 ]]; then
+        [[ "$default" == "y" ]] && return 0 || return 1
+    fi
     
     local response
     while true; do
