@@ -98,8 +98,6 @@ setup_repositories() {
             error "Failed to add Google Chrome repository"
         fi
     fi
-        rm -f "$temp_key"
-    fi
     
     # Update package lists after adding repositories
     sudo apt update

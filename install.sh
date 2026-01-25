@@ -50,7 +50,7 @@ setup_logging() {
     # Rotate logs if current log is too large
     if [[ -f "$LOG_FILE" ]]; then
         local log_size
-        log_size=$(stat -f%z "$LOG_FILE" 2>/dev/null || stat -c%s "$LOG_FILE" 2>/dev/null)
+        log_size=$(stat -c%s "$LOG_FILE" 2>/dev/null || stat -f%z "$LOG_FILE" 2>/dev/null)
         
         if [[ "$log_size" -gt "$MAX_LOG_SIZE" ]]; then
             # Rotate existing logs
@@ -97,6 +97,10 @@ info() {
     echo -e "${CYAN}[INFO] $*${NC}"
 }
 
+success() {
+    echo -e "${GREEN}[SUCCESS] $*${NC}"
+}
+
 # Check for root privileges
 check_root() {
     if [[ $EUID -eq 0 ]]; then
@@ -124,7 +128,7 @@ validate_environment() {
     fi
     
     # Check internet connectivity
-    if ! ping -c 1 8.8.8.8 >/dev/null 2>&1; then
+    if ! ping -c 1 -W 3 8.8.8.8 >/dev/null 2>&1 && ! ping -c 1 -W 3 1.1.1.1 >/dev/null 2>&1; then
         error "No internet connectivity detected. Internet access is required."
         ((errors++))
     fi
@@ -246,7 +250,7 @@ show_system_info() {
     echo "  👨‍💻 Family: $family"
     echo "  🖥️  Architecture: $(uname -m)"
     echo "  🐧 Kernel: $(uname -r)"
-    echo "  💾 Available RAM: $(free -h | awk 'NR==2{printf "%.1f GB", $7/1024/1024/1024}')"
+    echo "  💾 Available RAM: $(free -h | awk 'NR==2{print $7}' 2>/dev/null || echo 'Unknown')"
     echo
 }
 

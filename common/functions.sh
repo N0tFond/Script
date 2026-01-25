@@ -30,14 +30,32 @@ check_disk_space() {
 
 # Detect distribution robustly
 detect_distro() {
+    local distro=""
+    
     if [[ -f /etc/os-release ]]; then
-        # shellcheck disable=SC1091
-        source /etc/os-release
-        echo "${ID}"
+        # Parse os-release safely without sourcing for security
+        distro=$(grep -oP '^ID=\K.*' /etc/os-release | tr -d '"' | head -n1)
+    elif [[ -f /etc/lsb-release ]]; then
+        # Parse lsb-release safely
+        distro=$(grep -oP '^DISTRIB_ID=\K.*' /etc/lsb-release | tr -d '"' | head -n1)
+    elif [[ -f /etc/debian_version ]]; then
+        distro="debian"
+    elif [[ -f /etc/redhat-release ]]; then
+        distro="rhel"
+    elif [[ -f /etc/arch-release ]]; then
+        distro="arch"
     else
         error "Unable to detect distribution"
         return 1
     fi
+    
+    # Validate distro name contains only safe characters
+    if [[ ! "$distro" =~ ^[a-zA-Z0-9-]+$ ]]; then
+        error "Invalid distribution name detected: $distro"
+        return 1
+    fi
+    
+    echo "${distro,,}"  # Convert to lowercase
 }
 
 # Security and validation functions
@@ -73,7 +91,7 @@ secure_download() {
     if curl -fsSL --max-time 60 --retry 3 --max-filesize "$max_size" "$url" -o "$temp_file"; then
         # Verify file size
         local file_size
-        file_size=$(stat -f%z "$temp_file" 2>/dev/null || stat -c%s "$temp_file" 2>/dev/null)
+        file_size=$(stat -c%s "$temp_file" 2>/dev/null || stat -f%z "$temp_file" 2>/dev/null)
         
         if [[ "$file_size" -gt "$max_size" ]]; then
             error "Downloaded file too large: $file_size bytes"

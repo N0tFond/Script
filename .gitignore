@@ -68,4 +68,8 @@ out/
 *.tmp
 *.temp
 
+# Project specific logs
+installation.log
+installation.log.*
+security-audit.log
 .security-audit.log

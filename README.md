@@ -1,25 +1,25 @@
 # 🚀 Universal Linux Installer
 
-Un script d'installation universel et optimisé pour les distributions Linux, supportant une large gamme de familles de distributions avec détection automatique.
+A universal and optimized installation script for Linux distributions, supporting a wide range of distribution families with automatic detection.
+[Version en français dans LISEZMOI.md](./LISEZMOI.md)
+## ✨ Features
 
-## ✨ Fonctionnalités
+- 🔍 **Automatic detection** of Linux distribution
+- 📦 **Multi-distribution support** with specialized scripts
+- 🎯 **Modular installation** with interactive package selection
+- 🛠️ **Optimized configuration** for each package manager
+- 📊 **Progress bars** and detailed logging
+- 🔧 **Complete development environment**
+- 🐚 **ZSH configuration** with Oh My Zsh
+- 📝 **Complete logging** for debugging
+- 🧹 **Automatic system cleanup**
 
-- 🔍 **Détection automatique** de la distribution Linux
-- 📦 **Support multi-distribution** avec scripts spécialisés
-- 🎯 **Installation modulaire** avec sélection interactive des paquets
-- 🛠️ **Configuration optimisée** pour chaque gestionnaire de paquets
-- 📊 **Barres de progression** et logging détaillé
-- 🔧 **Environnement de développement** complet
-- 🐚 **Configuration ZSH** avec Oh My Zsh
-- 📝 **Logging complet** pour debugging
-- 🧹 **Nettoyage automatique** du système
-
-## 🏗️ Structure du Projet
+## 🏗️ Project Structure
 
 ```
-├── install.sh                    # Script principal avec détection auto
+├── install.sh                    # Main script with auto detection
 ├── common/
-│   └── functions.sh              # Fonctions communes partagées
+│   └── functions.sh              # Shared common functions
 └── distributions/
     ├── debian/
     │   └── install.sh           # Ubuntu, Debian, Mint, Elementary, Pop!_OS, Kali
@@ -37,11 +37,11 @@ Un script d'installation universel et optimisé pour les distributions Linux, su
         └── install.sh           # NixOS
 ```
 
-## 🐧 Distributions Supportées
+## 🐧 Supported Distributions
 
-### Famille Debian
+### Debian Family
 
-- **Ubuntu** (toutes versions)
+- **Ubuntu** (all versions)
 - **Debian** (stable, testing, unstable)
 - **Linux Mint**
 - **Elementary OS**
@@ -49,7 +49,7 @@ Un script d'installation universel et optimisé pour les distributions Linux, su
 - **Kali Linux**
 - **Parrot Security OS**
 
-### Famille Arch
+### Arch Family
 
 - **Arch Linux**
 - **Manjaro**
@@ -58,7 +58,7 @@ Un script d'installation universel et optimisé pour les distributions Linux, su
 - **Garuda Linux**
 - **Artix Linux**
 
-### Famille Red Hat
+### Red Hat Family
 
 - **Fedora**
 - **CentOS**
@@ -67,296 +67,292 @@ Un script d'installation universel et optimisé pour les distributions Linux, su
 - **AlmaLinux**
 - **OpenSUSE**
 
-### Autres Distributions
+### Other Distributions
 
-- **Gentoo Linux** - Compilation depuis les sources
-- **Alpine Linux** - Distribution légère basée sur musl
-- **Void Linux** - Rolling release avec runit
-- **NixOS** - Configuration déclarative
+- **Gentoo Linux** - Source-based compilation
+- **Alpine Linux** - Lightweight musl-based distribution
+- **Void Linux** - Rolling release with runit
+- **NixOS** - Declarative configuration
 
-## 🚀 Installation Rapide
+## 🚀 Quick Installation
 
-### Utilisation Simple
+### Simple Usage
 
 ```bash
-# Cloner le repository
+# Clone the repository
 git clone https://github.com/N0tFond/Script.git
 cd Script
 
-# Rendre le script exécutable
+# Make the script executable
 chmod +x install.sh
 
-# Lancer l'installation (le script détecte automatiquement votre distribution)
+# Run the installation (script automatically detects your distribution)
 ./install.sh
 ```
 
-### Installation Spécifique
+### Specific Installation
 
-Si vous voulez forcer une distribution spécifique :
+If you want to force a specific distribution:
 
 ```bash
-# Pour Ubuntu/Debian
+# For Ubuntu/Debian
 ./distributions/debian/install.sh ubuntu
 
-# Pour Arch Linux
+# For Arch Linux
 ./distributions/arch/install.sh arch
 
-# Pour Fedora
+# For Fedora
 ./distributions/redhat/install.sh fedora
 ```
 
-## ⚠️ Avertissements Critiques
+## ⚠️ Critical Warnings
 
 > [!IMPORTANT]
-> **Distribution non détectée** : Si le script échoue à identifier votre distribution Linux, l'installation se terminera immédiatement avec un code d'erreur.
+> **Distribution not detected**: If the script fails to identify your Linux distribution, the installation will terminate immediately with an error code.
 
-### 🔍 Résolution des Problèmes de Détection
+### � Detection Problem Resolution
 
 > [!WARNING]
-> **Échec de détection automatique** peut survenir sur des distributions personnalisées ou très récentes.
+> **Automatic detection failure** can occur on custom or very recent distributions.
 
-**Solutions recommandées :**
+**Recommended solutions:**
 
-1. **Vérification de compatibilité**
+1. **Compatibility verification**
 
    ```bash
-   # Vérifier votre distribution
+   # Check your distribution
    cat /etc/os-release
    ```
 
-2. **Installation forcée** pour distributions compatibles
+2. **Forced installation** for compatible distributions
 
    ```bash
-   # Distribution basée Debian (Ubuntu, Mint, Elementary, etc.)
+   # Debian-based distribution (Ubuntu, Mint, Elementary, etc.)
    ./distributions/debian/install.sh ubuntu
 
-   # Distribution basée Arch (Manjaro, EndeavourOS, etc.)
+   # Arch-based distribution (Manjaro, EndeavourOS, etc.)
    ./distributions/arch/install.sh arch
 
-   # Distribution basée Red Hat (Fedora, CentOS, etc.)
+   # Red Hat-based distribution (Fedora, CentOS, etc.)
    ./distributions/redhat/install.sh fedora
    ```
 
-3. **Support technique**
+3. **Technical support**
 
 > [!NOTE]
-> Créez une issue GitHub avec les informations suivantes :
+> Create a GitHub issue with the following information:
 >
-> - Sortie de `cat /etc/os-release`
-> - Version du kernel (`uname -r`)
-> - Messages d'erreur complets
+> - Output of `cat /etc/os-release`
+> - Kernel version (`uname -r`)
+> - Complete error messages
 
-### 🛡️ Recommandations de Sécurité
+### 🛡️ Security Recommendations
 
 > [!CAUTION]
-> **Tests obligatoires** : Toujours tester sur une machine virtuelle avant déploiement en production.
+> **Mandatory testing**: Always test on a virtual machine before production deployment.
 >
-> - **Sauvegarde complète** des données critiques
-> - **Point de restauration** système si disponible
-> - **Vérification des privilèges** sudo avant exécution
-> - **Connexion internet stable** requise pendant l'installation
+> - **Complete backup** of critical data
+> - **System restore point** if available
+> - **Sudo privileges verification** before execution
+> - **Stable internet connection** required during installation
 
 > [!TIP]
-> **Mode debug** : Ajoutez `bash -x` pour un diagnostic détaillé
+> **Debug mode**: Add `bash -x` for detailed diagnostics
 >
 > ```bash
 > bash -x ./install.sh
 > ```
->
-> --
 
-## 📦 Paquets Installés
+## 📦 Installed Packages
 
-### Paquets de Base
+### Base Packages
 
-- **Outils système** : git, curl, wget, htop, tree, unzip
-- **Shell** : zsh avec Oh My Zsh
-- **Informations système** : neofetch
+- **System tools**: git, curl, wget, htop, tree, unzip
+- **Shell**: zsh with Oh My Zsh
+- **System information**: neofetch
 
-### Outils de Développement
+### Development Tools
 
 - **Node.js** via NVM (version 22)
-- **Python 3** avec pip
-- **Compilateurs** : gcc, make, build-essential
-- **Git** avec configuration interactive
+- **Python 3** with pip
+- **Compilers**: gcc, make, build-essential
+- **Git** with interactive configuration
 
 ### Applications
 
-- **Éditeur** : Visual Studio Code
-- **Navigateurs** : Firefox, Chrome
-- **Média** : VLC, Spotify
-- **Communication** : Discord
-- **Productivité** : LibreOffice
-- **Graphisme** : GIMP
+- **Editor**: Visual Studio Code
+- **Browsers**: Firefox, Chrome
+- **Media**: VLC, Spotify
+- **Communication**: Discord
+- **Productivity**: LibreOffice
+- **Graphics**: GIMP
 
-### Gestionnaires de Paquets Alternatifs
+### Alternative Package Managers
 
-- **Flatpak** avec Flathub
+- **Flatpak** with Flathub
 - **Snap** (Ubuntu)
 - **AUR helpers** (Arch - yay)
 
-## 🔧 Fonctionnalités par Distribution
+## 🔧 Features by Distribution
 
 ### Debian/Ubuntu
 
-- Configuration des dépôts officiels et tiers
-- Support PPA et dépôts externes
-- Installation via APT, Flatpak et Snap
+- Official and third-party repository configuration
+- PPA and external repository support
+- Installation via APT, Flatpak and Snap
 
 ### Arch Linux
 
-- Configuration Pacman optimisée
-- Installation AUR helper (yay)
-- Gestion des services avec systemd
-- Nettoyage automatique des paquets orphelins
+- Optimized Pacman configuration
+- AUR helper installation (yay)
+- Service management with systemd
+- Automatic cleanup of orphaned packages
 
 ### Fedora/RHEL
 
-- Configuration RPM Fusion
-- Gestion des référentiels EPEL
-- Support SELinux
-- Configuration firewalld
+- RPM Fusion configuration
+- EPEL repository management
+- SELinux support
+- Firewalld configuration
 
 ### Gentoo
 
-- Optimisation Portage (MAKEOPTS, USE flags)
-- Gestion des overlays avec Layman
-- Services OpenRC
-- Compilation parallèle optimisée
+- Portage optimization (MAKEOPTS, USE flags)
+- Overlay management with Layman
+- OpenRC services
+- Optimized parallel compilation
 
 ### Alpine
 
-- Compatibilité glibc pour applications
-- Gestion légère des paquets
-- Services OpenRC
-- Optimisations musl libc
+- Glibc compatibility for applications
+- Lightweight package management
+- OpenRC services
+- Musl libc optimizations
 
 ### Void Linux
 
-- Configuration XBPS optimisée
-- Services runit
-- Dépôts multilib et non-free
-- Gestion cache intelligente
+- Optimized XBPS configuration
+- Runit services
+- Multilib and non-free repositories
+- Intelligent cache management
 
 ### NixOS
 
-- Configuration déclarative
+- Declarative configuration
 - Home-manager setup
 - Flakes support
-- Garbage collection automatique
+- Automatic garbage collection
 
-## ⚙️ Options de Configuration
+## ⚙️ Configuration Options
 
-Le script propose plusieurs niveaux de personnalisation :
+The script offers several levels of customization:
 
-### Installation Interactive
+### Interactive Installation
 
-- Sélection des catégories de paquets
-- Choix des applications individuelles
-- Configuration des services système
-- Optimisations spécifiques à la distribution
+- Package category selection
+- Individual application choices
+- System service configuration
+- Distribution-specific optimizations
 
-### Configuration Automatisée
+### Automated Configuration
 
-- Variables d'environnement pré-définies
-- Scripts de configuration par défaut
-- Nettoyage automatique post-installation
+- Pre-defined environment variables
+- Default configuration scripts
+- Automatic post-installation cleanup
 
-## 📝 Logging et Debugging
+## 📝 Logging and Debugging
 
-- **Fichier de log** : `installation.log` dans le répertoire du script
-- **Codes de couleur** pour une meilleure lisibilité
-- **Gestion d'erreurs** complète avec rollback
-- **Progress bars** pour les opérations longues
+- **Log file**: `installation.log` in the script directory
+- **Color codes** for better readability
+- **Complete error handling** with rollback
+- **Progress bars** for long operations
 
-## 🛡️ Sécurité
+## 🛡️ Security
 
-- **Vérification des privilèges** : Le script refuse de s'exécuter en root
-- **Validation des entrées** utilisateur
-- **Vérification des signatures** des dépôts
-- **Backup automatique** des configurations système
+- **Privilege verification**: The script refuses to run as root
+- **User input validation**
+- **Repository signature verification**
+- **Automatic backup** of system configurations
 
-## 🚨 Prérequis
+## 🚨 Prerequisites
 
-- **Connexion internet** active
-- **Privilèges sudo** pour l'utilisateur
+- **Active internet connection**
+- **Sudo privileges** for the user
 - **Bash 4.0+** minimum
-- **Distribution Linux supportée**
+- **Supported Linux distribution**
 
-## 🤝 Contribution
+## 🤝 Contributing
 
-Les contributions sont les bienvenues ! Voici comment contribuer :
+Contributions are welcome! Here's how to contribute:
 
-1. **Fork** le projet
-2. **Créer** une branche feature (`git checkout -b feature/nouvelle-distribution`)
-3. **Commit** vos changements (`git commit -m 'Ajout support pour XYZ'`)
-4. **Push** vers la branche (`git push origin feature/nouvelle-distribution`)
-5. **Créer** une Pull Request
+1. **Fork** the project
+2. **Create** a feature branch (`git checkout -b feature/new-distribution`)
+3. **Commit** your changes (`git commit -m 'Add support for XYZ'`)
+4. **Push** to the branch (`git push origin feature/new-distribution`)
+5. **Create** a Pull Request
 
-### Ajouter une Nouvelle Distribution
+### Adding a New Distribution
 
-1. Créer un dossier dans `distributions/nom-famille/`
-2. Créer un script `install.sh` basé sur les templates existants
-3. Ajouter la détection dans le script principal
-4. Tester sur la distribution cible
+1. Create a folder in `distributions/family-name/`
+2. Create an `install.sh` script based on existing templates
+3. Add detection in the main script
+4. Test on the target distribution
 
-## 📄 Licence
+## 📄 License
 
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+This project is licensed under MIT. See the [LICENSE](LICENSE) file for more details.
 
-## 👤 Auteur
-
-| Auteur |
+| Author |
 | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:
 | [<img src="https://avatars.githubusercontent.com/u/92156365?s=400&u=03e2069751224461782a03ba2dfa57a51c4e5438&v=4" width=115 style="border-radius: 15px;" ><br><sub>@notfound</sub>](https://github.com/N0tFond) <br><br> [![](https://img.shields.io/badge/Portfolio-255E63?style=for-the-badge&logo=About.me&logoColor=white)](https://notfound-dev.vercel.app)
 
 ## 🔄 Changelog
 
-### Version 3.0 (Octobre 2025)
+### Version 3.0 (October 2025)
 
-- 🔒 **Audit de sécurité complet** avec rapport détaillé et configuration renforcée
-- 🛡️ **Scripts de sécurité** : `security-audit.sh` pour vérifications système automatisées
-- 📋 **Tests de détection** améliorés avec `test-detection.sh` pour validation multi-distribution
-- 🔄 **Script de migration** `migrate.sh` pour mise à jour fluide entre versions
-- 📚 **Documentation multilingue** avec README en anglais (`EN_README.md`)
-- 🔧 **Configuration de sécurité** centralisée via `security.conf`
-- 🧪 **Tests automatisés** pour garantir la compatibilité cross-distribution
-- 🔍 **Détection de vulnérabilités** et recommandations de sécurité
-- 📊 **Métriques de performance** et monitoring des installations
-- 🛠️ **Fonctions communes optimisées** dans `common/functions.sh`
+- 🔒 **Complete security audit** with detailed report and enhanced configuration
+- 🛡️ **Security scripts**: `security-audit.sh` for automated system checks
+- 📋 **Improved detection tests** with `test-detection.sh` for multi-distribution validation
+- 🔄 **Migration script** `migrate.sh` for smooth version updates
+- 📚 **Multilingual documentation** with English README (`EN_README.md`)
+- 🔧 **Centralized security configuration** via `security.conf`
+- 🧪 **Automated testing** to ensure cross-distribution compatibility
+- 🔍 **Vulnerability detection** and security recommendations
+- 📊 **Performance metrics** and installation monitoring
+- 🛠️ **Optimized common functions** in `common/functions.sh`
 
-### Version 2.0 (Septembre 2024)
+### Version 2.0 (September 2024)
 
-- ✨ Refactorisation complète avec architecture modulaire
-- 🚀 Support de 7 familles de distributions Linux
-- 📊 Interface utilisateur améliorée avec progress bars
-- 🔧 Configuration optimisée par distribution
-- 📝 Logging avancé et gestion d'erreurs
-- 🧹 Nettoyage automatique intelligent
-- 🎯 Installation modulaire et interactive
+- ✨ Complete refactoring with modular architecture
+- 🚀 Support for 7 Linux distribution families
+- 📊 Improved user interface with progress bars
+- 🔧 Optimized configuration per distribution
+- 📝 Advanced logging and error handling
+- 🧹 Intelligent automatic cleanup
+- 🎯 Modular and interactive installation
 
-### Version 1.0 (Mai 2024)
+### Version 1.0 (May 2024)
 
-- 🎉 Version initiale pour Arch et Debian
-- 📦 Installation de base avec quelques applications
-- 🐚 Configuration ZSH basique
+- 🎉 Initial version for Arch and Debian
+- 📦 Basic installation with some applications
+- 🐚 Basic ZSH configuration
 
-## ⚠️ Avertissements
+## ⚠️ Warnings
 
-- **Testez toujours** sur une machine virtuelle avant utilisation en production
-- **Sauvegardez** vos données importantes avant installation
-- **Lisez** les logs en cas d'erreur pour diagnostiquer les problèmes
-- **Vérifiez** la compatibilité avec votre version spécifique de distribution
+- **Always test** on a virtual machine before production use
+- **Backup** your important data before installation
+- **Read** logs in case of errors to diagnose problems
+- **Verify** compatibility with your specific distribution version
 
 ## 🆘 Support
 
-En cas de problème :
+In case of problems:
 
-1. Consultez le fichier `installation.log`
-2. Vérifiez les issues GitHub existantes
-3. Créez une nouvelle issue avec le log d'erreur
-4. Spécifiez votre distribution et version exacte
+1. Check the `installation.log` file
+2. Review existing GitHub issues
+3. Create a new issue with the error log
+4. Specify your exact distribution and version
 
 ---
 
-**⭐ N'hésitez pas à star le projet si il vous a été utile !**
+**⭐ Don't hesitate to star the project if it was useful to you!**
