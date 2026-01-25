@@ -63,12 +63,10 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo -e "${YELLOW}Nettoyage des anciens fichiers...${NC}"
     
     # Create secure backup directory
-    local backup_dir="./backups"
     mkdir -p "$backup_dir"
     chmod 700 "$backup_dir"
     
     # Backup first with timestamp
-    local timestamp
     timestamp=$(date +%Y%m%d_%H%M%S)
     
     if [[ -f "./Arch_install.sh" ]]; then
