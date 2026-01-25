@@ -1,7 +1,9 @@
 # 🚀 Universal Linux Installer
 
 A universal and optimized installation script for Linux distributions, supporting a wide range of distribution families with automatic detection.
+
 [Version en français dans LISEZMOI.md](./LISEZMOI.md)
+
 ## ✨ Features
 
 - 🔍 **Automatic detection** of Linux distribution

@@ -6,7 +6,7 @@ echo "╔═══════════════════════�
 echo "║                        🚀 Universal Linux Installer 🚀                      ║"
 echo "╠═════════════════════════════════════════════════════════════════════════════╣"
 echo "║  📋 Author  : NotFond                                                       ║"
-echo "║  📌 Version : 2.0                                                           ║"
+echo "║  📌 Version : 4.0                                                           ║"
 echo "║  📅 Date    : September 2024                                                ║"
 echo "║  🔒 LICENSE : MIT                                                           ║"
 echo "║  🌟 Description: Auto-detects Linux distribution and runs appropriate       ║"

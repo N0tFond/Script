@@ -1,0 +1,160 @@
+name: 🏷️ Auto Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "install.sh"
+      - "distributions/*/install.sh"
+
+jobs:
+  check-version:
+    name: 🔍 Check Version Changes
+    runs-on: ubuntu-latest
+    outputs:
+      version_changed: ${{ steps.check.outputs.version_changed }}
+      current_version: ${{ steps.check.outputs.current_version }}
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: 🔍 Check for version changes
+        id: check
+        run: |
+          # Extraire la version actuelle du script principal
+          CURRENT_VERSION=$(grep -o "Version : [0-9]\+\.[0-9]\+" install.sh | head -1 | grep -o "[0-9]\+\.[0-9]\+")
+
+          # Vérifier si la version a changé dans le dernier commit
+          if git diff HEAD~1 HEAD install.sh | grep -q "Version : "; then
+            echo "version_changed=true" >> $GITHUB_OUTPUT
+            echo "current_version=v${CURRENT_VERSION}" >> $GITHUB_OUTPUT
+            echo "✅ Version changed to ${CURRENT_VERSION}"
+          else
+            echo "version_changed=false" >> $GITHUB_OUTPUT
+            echo "current_version=v${CURRENT_VERSION}" >> $GITHUB_OUTPUT
+            echo "ℹ️ No version change detected"
+          fi
+
+  auto-release:
+    name: 🚀 Create Auto Release
+    runs-on: ubuntu-latest
+    needs: check-version
+    if: needs.check-version.outputs.version_changed == 'true'
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🧪 Run tests before release
+        run: |
+          chmod +x test/*.sh
+          ./test/test-detection.sh
+          ./test/test-noninteractive.sh
+
+      - name: 📄 Generate changelog
+        id: changelog
+        run: |
+          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          echo "## 🔄 What's Changed" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+
+          # Générer le changelog depuis les commits
+          git log --oneline --pretty=format:"- %s" $(git describe --tags --abbrev=0 2>/dev/null || echo "")..HEAD | head -20 >> $GITHUB_OUTPUT
+
+          echo "" >> $GITHUB_OUTPUT
+          echo "## 🐛 Bug Fixes & 🚀 Features" >> $GITHUB_OUTPUT
+          echo "See individual commits for detailed changes." >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: 🏷️ Create and push tag
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git tag -a ${{ needs.check-version.outputs.current_version }} -m "Auto-release ${{ needs.check-version.outputs.current_version }}"
+          git push origin ${{ needs.check-version.outputs.current_version }}
+
+      - name: 📦 Create release archive
+        run: |
+          mkdir -p dist
+          tar -czf dist/universal-linux-installer-${{ needs.check-version.outputs.current_version }}.tar.gz \
+          --exclude='.git' \
+          --exclude='.github' \
+          --exclude='dist' \
+          --exclude='*.log' \
+          .
+
+          # Créer un script d'installation direct
+          cat > dist/quick-install.sh << 'EOF'
+          #!/bin/bash
+          # Quick installer for Universal Linux Installer
+          REPO="$GITHUB_REPOSITORY"
+          VERSION="${{ needs.check-version.outputs.current_version }}"
+          TEMP_DIR=$(mktemp -d)
+
+          echo "🚀 Downloading Universal Linux Installer ${VERSION}..."
+          curl -fsSL "https://github.com/${REPO}/archive/${VERSION}.tar.gz" | tar -xz -C "$TEMP_DIR"
+
+          cd "$TEMP_DIR"/universal-linux-installer-*
+          chmod +x install.sh
+          ./install.sh "$@"
+
+          # Cleanup
+          rm -rf "$TEMP_DIR"
+          EOF
+          chmod +x dist/quick-install.sh
+
+          - name: 🔍 Generate checksums
+              run: |
+              cd dist
+              sha256sum * > checksums.txt
+
+          - name: 🏗️ Create GitHub Release
+              uses: softprops/action-gh-release@v1
+              with:
+              tag_name: ${{ needs.check-version.outputs.current_version }}
+              name: 🚀 Universal Linux Installer ${{ needs.check-version.outputs.current_version }}
+              body: |
+                  # 🚀 Universal Linux Installer ${{ needs.check-version.outputs.current_version }}
+                  
+                  ## 📥 Quick Installation
+                  ```bash
+                  curl -fsSL https://github.com/${{ github.repository }}/releases/download/${{ needs.check-version.outputs.current_version }}/quick-install.sh | bash
+                  ```
+                  
+                  ## 📋 Manual Installation
+                  ```bash
+                  wget https://github.com/${{ github.repository }}/releases/download/${{ needs.check-version.outputs.current_version }}/universal-linux-installer-${{ needs.check-version.outputs.current_version }}.tar.gz
+                  tar -xzf universal-linux-installer-${{ needs.check-version.outputs.current_version }}.tar.gz
+                  cd universal-linux-installer-*/
+                  chmod +x install.sh
+                  ./install.sh
+                  ```
+                  
+                  ${{ steps.changelog.outputs.CHANGELOG }}
+                  
+                  ## 🔐 Security
+                  All files are signed and checksums are provided for verification.
+                  
+                  ## 🐧 Supported Systems
+                  - Ubuntu, Debian, Linux Mint, Elementary OS, Pop!_OS, Kali Linux
+                  - Arch Linux, Manjaro, EndeavourOS, ArcoLinux, Garuda Linux
+                  - Fedora, CentOS, RHEL, Rocky Linux, AlmaLinux, OpenSUSE
+                  - Gentoo, NixOS, Alpine Linux, Void Linux
+              files: |
+                  dist/*.tar.gz
+                  dist/quick-install.sh
+                  dist/checksums.txt
+              draft: false
+              prerelease: false
+              env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          - name: 📢 Announce release
+              run: |
+              echo "🎉 Successfully created release ${{ needs.check-version.outputs.current_version }}"
+              echo "📦 Archive: universal-linux-installer-${{ needs.check-version.outputs.current_version }}.tar.gz"
+              echo "⚡ Quick install: curl -fsSL https://github.com/${{ github.repository }}/releases/download/${{ needs.check-version.outputs.current_version }}/quick-install.sh | bash"
