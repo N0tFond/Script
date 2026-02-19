@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Red Hat-based distributions installer (Fedora, CentOS, RHEL, Rocky, AlmaLinux, etc.)
+# Red Hat-based distributions installer (Fedora, Nobara, CentOS, RHEL, Rocky, AlmaLinux, etc.)
 # This script handles DNF/YUM package management and RPM repositories
 
 set -euo pipefail
@@ -82,7 +82,7 @@ setup_repositories() {
         fi
     fi
     
-    # Setup RPM Fusion (for Fedora)
+    # Setup RPM Fusion (for Fedora - Nobara already includes RPM Fusion)
     if [[ "$DISTRO" == "fedora" ]]; then
         if confirm "Enable RPM Fusion repositories?" "y"; then
             info "Installing RPM Fusion repositories..."
