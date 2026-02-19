@@ -26,7 +26,7 @@ Un script d'installation universel et optimisé pour les distributions Linux, su
     ├── arch/
     │   └── install.sh           # Arch, Manjaro, EndeavourOS, ArcoLinux, Garuda
     ├── redhat/
-    │   └── install.sh           # Fedora, CentOS, RHEL, Rocky, AlmaLinux, OpenSUSE
+    │   └── install.sh           # Fedora, Nobara, CentOS, RHEL, Rocky, AlmaLinux, OpenSUSE
     ├── gentoo/
     │   └── install.sh           # Gentoo Linux
     ├── alpine/
@@ -61,6 +61,7 @@ Un script d'installation universel et optimisé pour les distributions Linux, su
 ### Famille Red Hat
 
 - **Fedora**
+- **Nobara Linux**
 - **CentOS**
 - **Red Hat Enterprise Linux (RHEL)**
 - **Rocky Linux**

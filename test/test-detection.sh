@@ -53,7 +53,7 @@ get_distro_family() {
         ubuntu|debian|mint|elementary|pop|kali|parrot)
             echo "debian"
             ;;
-        fedora|centos|rhel|rocky|alma|opensuse*)
+        fedora|centos|rhel|rocky|alma|nobara|opensuse*)
             echo "redhat"
             ;;
         arch|manjaro|endeavouros|artix|garuda)
