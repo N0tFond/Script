@@ -185,7 +185,7 @@ If you want to force a specific distribution:
 
 - **Editor**: Visual Studio Code
 - **Browsers**: Firefox, Chrome
-- **Media**: VLC, Spotify
+- **Media**: VLC
 - **Communication**: Discord
 - **Productivity**: LibreOffice
 - **Graphics**: GIMP

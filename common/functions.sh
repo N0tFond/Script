@@ -132,14 +132,12 @@ declare -A BASE_PACKAGES=(
 declare -A FLATPAK_PACKAGES=(
     ["vscode"]="com.visualstudio.code"
     ["discord"]="com.discordapp.Discord"
-    ["spotify"]="com.spotify.Client"
     ["gimp"]="org.gimp.GIMP"
 )
 
 declare -A SNAP_PACKAGES=(
     ["vscode"]="code --classic"
     ["discord"]="discord"
-    ["spotify"]="spotify"
     ["postman"]="postman"
 )
 

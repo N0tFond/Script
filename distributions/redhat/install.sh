@@ -45,7 +45,6 @@ declare -A RPMFUSION_PACKAGES=(
 declare -A FLATPAK_APPS=(
     ["vscode"]="com.visualstudio.code"
     ["discord"]="com.discordapp.Discord"
-    ["spotify"]="com.spotify.Client"
     ["steam"]="com.valvesoftware.Steam"
     ["chrome"]="com.google.Chrome"
 )
@@ -166,8 +165,7 @@ install_applications() {
     echo "  6) LibreOffice"
     echo "  7) Thunderbird"
     echo "  8) Discord (Flatpak)"
-    echo "  9) Spotify (Flatpak)"
-    echo "  10) Steam (Flatpak)"
+    echo "  9) Steam (Flatpak)"
     echo "  a) All applications"
     echo "  s) Skip applications"
     echo
@@ -181,7 +179,7 @@ install_applications() {
         s|S) return 0 ;;
         a|A) 
             apps=("code" "google-chrome-stable" "firefox" "vlc" "gimp" "libreoffice" "thunderbird")
-            flatpak_apps=("com.discordapp.Discord" "com.spotify.Client" "com.valvesoftware.Steam")
+            flatpak_apps=("com.discordapp.Discord" "com.valvesoftware.Steam")
             ;;
         *)
             IFS=',' read -ra choices <<< "$choice"
@@ -196,8 +194,7 @@ install_applications() {
                     6) apps+=("libreoffice") ;;
                     7) apps+=("thunderbird") ;;
                     8) flatpak_apps+=("com.discordapp.Discord") ;;
-                    9) flatpak_apps+=("com.spotify.Client") ;;
-                    10) flatpak_apps+=("com.valvesoftware.Steam") ;;
+                    9) flatpak_apps+=("com.valvesoftware.Steam") ;;
                 esac
             done
             ;;

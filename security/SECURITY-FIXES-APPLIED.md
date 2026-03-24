@@ -154,7 +154,6 @@ fi
 **Changements:**
 
 - ✅ `http://dl-cdn.alpinelinux.org` → `https://dl-cdn.alpinelinux.org`
-- ✅ `http://repository.spotify.com` → `https://repository.spotify.com`
 - ✅ `http://dl.google.com` → `https://dl.google.com`
 
 ---

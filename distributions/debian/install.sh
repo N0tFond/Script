@@ -77,17 +77,6 @@ setup_repositories() {
         rm -f "$temp_key"
     fi
     
-    # Spotify repository
-    if confirm "Add Spotify repository?" "y"; then
-        if curl -fsSL --max-time 30 --retry 3 "https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg" | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg; then
-            sudo chmod 644 /etc/apt/trusted.gpg.d/spotify.gpg
-            echo "deb https://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list > /dev/null
-            success "Spotify repository added"
-        else
-            error "Failed to add Spotify repository"
-        fi
-    fi
-    
     # Google Chrome repository (Ubuntu/Debian)
     if confirm "Add Google Chrome repository?" "y"; then
         if curl -fsSL --max-time 30 --retry 3 "https://dl.google.com/linux/linux_signing_key.pub" | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/google-chrome.gpg; then
@@ -140,13 +129,12 @@ install_applications() {
     info "Select applications to install:"
     echo "  1) Visual Studio Code"
     echo "  2) Google Chrome"
-    echo "  3) Spotify"
-    echo "  4) Discord (via Flatpak)"
-    echo "  5) Steam (via Flatpak)"
-    echo "  6) GIMP"
-    echo "  7) LibreOffice"
-    echo "  8) VLC Media Player"
-    echo "  9) Firefox"
+    echo "  3) Discord (via Flatpak)"
+    echo "  4) Steam (via Flatpak)"
+    echo "  5) GIMP"
+    echo "  6) LibreOffice"
+    echo "  7) VLC Media Player"
+    echo "  8) Firefox"
     echo "  a) All applications"
     echo "  s) Skip applications"
     echo
@@ -155,7 +143,7 @@ install_applications() {
     
     case "$choice" in
         s|S) return 0 ;;
-        a|A) apps=("code" "google-chrome-stable" "spotify-client" "gimp" "libreoffice" "vlc" "firefox-esr") ;;
+        a|A) apps=("code" "google-chrome-stable" "gimp" "libreoffice" "vlc" "firefox-esr") ;;
         *)
             IFS=',' read -ra choices <<< "$choice"
             for c in "${choices[@]}"; do
@@ -163,13 +151,12 @@ install_applications() {
                 case "$c" in
                     1) apps+=("code") ;;
                     2) apps+=("google-chrome-stable") ;;
-                    3) apps+=("spotify-client") ;;
-                    4) install_flatpak_app "com.discordapp.Discord" ;;
-                    5) install_flatpak_app "com.valvesoftware.Steam" ;;
-                    6) apps+=("gimp") ;;
-                    7) apps+=("libreoffice") ;;
-                    8) apps+=("vlc") ;;
-                    9) apps+=("firefox-esr") ;;
+                    3) install_flatpak_app "com.discordapp.Discord" ;;
+                    4) install_flatpak_app "com.valvesoftware.Steam" ;;
+                    5) apps+=("gimp") ;;
+                    6) apps+=("libreoffice") ;;
+                    7) apps+=("vlc") ;;
+                    8) apps+=("firefox-esr") ;;
                 esac
             done
             ;;

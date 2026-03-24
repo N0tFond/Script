@@ -274,7 +274,6 @@ setup_home_manager() {
     # Development tools
     vscode
     discord
-    spotify
     
     # Terminal tools
     zsh
@@ -322,10 +321,9 @@ install_nix_packages() {
         info "Select packages to install:"
         echo "  1) Visual Studio Code"
         echo "  2) Discord"
-        echo "  3) Spotify"
-        echo "  4) Google Chrome"
-        echo "  5) GIMP"
-        echo "  6) LibreOffice"
+        echo "  3) Google Chrome"
+        echo "  4) GIMP"
+        echo "  5) LibreOffice"
         echo "  s) Skip imperative installation"
         echo
         
@@ -342,10 +340,9 @@ install_nix_packages() {
                     case "$c" in
                         1) packages+=("vscode") ;;
                         2) packages+=("discord") ;;
-                        3) packages+=("spotify") ;;
-                        4) packages+=("google-chrome") ;;
-                        5) packages+=("gimp") ;;
-                        6) packages+=("libreoffice") ;;
+                      3) packages+=("google-chrome") ;;
+                      4) packages+=("gimp") ;;
+                      5) packages+=("libreoffice") ;;
                     esac
                 done
                 ;;

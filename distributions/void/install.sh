@@ -111,8 +111,7 @@ install_applications() {
     echo "  6) LibreOffice"
     echo "  7) Thunderbird"
     echo "  8) Discord"
-    echo "  9) Spotify (if available)"
-    echo "  10) Steam (from multilib)"
+    echo "  9) Steam (from multilib)"
     echo "  a) All available applications"
     echo "  s) Skip applications"
     echo
@@ -137,8 +136,7 @@ install_applications() {
                     6) apps+=("libreoffice") ;;
                     7) apps+=("thunderbird") ;;
                     8) apps+=("discord") ;;
-                    9) apps+=("spotify") ;;
-                    10) apps+=("steam") ;;
+                    9) apps+=("steam") ;;
                 esac
             done
             ;;

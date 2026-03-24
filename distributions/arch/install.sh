@@ -24,7 +24,6 @@ declare -A DISTRO_PACKAGES=(
 # AUR packages (require AUR helper)
 declare -A AUR_PACKAGES=(
     ["vscode"]="visual-studio-code-bin"
-    ["spotify"]="spotify"
     ["discord"]="discord"
     ["chrome"]="google-chrome"
     ["postman"]="postman-bin"
