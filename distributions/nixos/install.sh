@@ -10,7 +10,7 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/../../common/functions.sh"
 
 # Distribution-specific configuration
-readonly DISTRO="$1"
+readonly DISTRO="${1:-nixos}"
 
 # NixOS configuration
 readonly NIX_CONFIG_DIR="/etc/nixos"
